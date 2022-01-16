@@ -1,17 +1,17 @@
 
-// FOR ENDPOINTPIVOT
-export const starName = "TRUPS4";
-export const pointNames = ['RANJR', 'JARHD', 'PJAAE', 'USAAY', 'WEEDU', 'SUPRT', 'OOURR', 'TRUPS'];
-export const legLengths = [9, 9, 12, 7, 8, 13, 8];
-export const constraints = [
-    [28000, 24000],
-    [26000, 22000],
-    [23000, 21000],
-    [21000, 17000],
-    [19000, 16000],
-    [17000, 14000],
-    [13000, 0],
-    [11000, 11000]];
+// // FOR ENDPOINTPIVOT
+// export const starName = "TRUPS4";
+// export const pointNames = ['RANJR', 'JARHD', 'PJAAE', 'USAAY', 'WEEDU', 'SUPRT', 'OOURR', 'TRUPS'];
+// export const legLengths = [9, 9, 12, 7, 8, 13, 8];
+// export const constraints = [
+//     [28000, 24000],
+//     [26000, 22000],
+//     [23000, 21000],
+//     [21000, 17000],
+//     [19000, 16000],
+//     [17000, 14000],
+//     [13000, 0],
+//     [11000, 11000]];
 
 // FOR RIGIDCHECK
 // export const starName = "NITZR3";
