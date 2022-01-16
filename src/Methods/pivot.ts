@@ -1,6 +1,17 @@
 import { Point } from "../Classes/Point";
 import { Star } from "../Classes/Star";
+import { Vcalc } from "../vcalc";
 
 export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: Point) {
-    return 'NOT FINISHED';
+    const vcalc = new Vcalc();
+    var angles: number[] = [];
+    var a = 0;
+    while (a < 7) {
+        a = parseFloat((a + 0.1).toFixed(1));
+        angles.push(a);
+    }
+
+    var des = new Map();
+    des.set('RANJR_JARHD', new Map().set('RANJR', 25704).set('LEG FPA', 2.1));
+    return des; // TODO: Rememeber to return an empty map if angle(s) didn't work
 }
