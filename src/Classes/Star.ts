@@ -2,12 +2,13 @@ import { Leg } from "./Leg";
 import { Point } from "./Point";
 
 export class Star {
-    starName: string;
-    pointNames: string[];
-    constraints: number[][];
-    legLengths: number[];
-    points: Point[];
-    legs: Leg[]
+    public readonly starName: string;
+    public readonly pointNames: string[];
+    public readonly constraints: number[][];
+    public readonly legLengths: number[];
+    public readonly points: Point[];
+    public readonly legs: Leg[];
+    public readonly length: number = 0;
     constructor (starName: string, pointNames: string[], constraints: number[][], legLengths: any) {
         this.starName = starName;
         this.pointNames = pointNames;
@@ -31,12 +32,8 @@ export class Star {
                 break;
             }
         }
-    }
-    length() {
-        let len = 0;
-        for (let leg of this.legs) {
-            len += leg.length;
+        for (const leg of this.legs) {
+            this.length += leg.length;
         }
-        return len
     }
 }
