@@ -13,5 +13,6 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
 
     var des = new Map();
     des.set('RANJR_JARHD', new Map().set('RANJR', 25704).set('LEG FPA', 2.1));
+    // TODO: pivot
     return des; // TODO: Rememeber to return an empty map if angle(s) didn't work
 }
