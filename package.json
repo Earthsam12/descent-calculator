@@ -2,7 +2,7 @@
   "name": "descent-calculator",
   "version": "0.1.0",
   "description": "Simple calculator that can provide FPA(s) for a descent path given constraints",
-  "main": "main.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
