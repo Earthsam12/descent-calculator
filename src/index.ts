@@ -1,8 +1,8 @@
 import { Star } from "./lib/Star";
 import { Vcalc } from "./vcalc";
-import { multiFPA } from "./Methods/multiFPA";
-import { Pivot } from "./Methods/pivot";
-import { RigidCheck } from "./Methods/rigidCheck";
+import { multiFPA } from "./calculate/multiFPA";
+import { Pivot } from "./calculate/pivot";
+import { RigidCheck } from "./calculate/rigidCheck";
 
 export function calcDes(star: Star, cruise: number, finalAlt: number) {
     const vcalc = new Vcalc();
