@@ -36,7 +36,6 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
         // Decide what to do based on next constraint
 
         // If next constraint is rigid
-        console.log(vcalc.altChange(leg.length, currentAngle) + alt, constraints);
         if (constraints[0] == constraints[1]) {
             console.log('Constraint is rigid; calculating required angle');
             const fpa = vcalc.desAngle(leg.length, constraints[0] - alt);
