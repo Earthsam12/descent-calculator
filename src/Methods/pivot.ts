@@ -1,5 +1,5 @@
-import { Point } from "../Classes/Point";
-import { Star } from "../Classes/Star";
+import { Point } from "../lib/Point";
+import { Star } from "../lib/Star";
 import { Vcalc } from "../vcalc";
 
 export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: Point) {

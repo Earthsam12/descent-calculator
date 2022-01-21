@@ -1,4 +1,4 @@
-import { Star } from "./Classes/Star";
+import { Star } from "./lib/Star";
 import { Vcalc } from "./vcalc";
 import { multiFPA } from "./Methods/multiFPA";
 import { Pivot } from "./Methods/pivot";

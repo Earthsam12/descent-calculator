@@ -1,4 +1,4 @@
-import { Star } from "../Classes/Star";
+import { Star } from "../lib/Star";
 
 export const TRUPS4 = new Star(
     "TRUPS4",

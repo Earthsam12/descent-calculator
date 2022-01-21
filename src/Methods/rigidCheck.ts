@@ -1,5 +1,5 @@
-import { Point } from "../Classes/Point";
-import { Star } from "../Classes/Star";
+import { Point } from "../lib/Point";
+import { Star } from "../lib/Star";
 import { Vcalc } from "../vcalc";
 
 export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: Point, point2: Point) {

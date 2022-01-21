@@ -1,4 +1,4 @@
-import { Star } from "../Classes/Star";
+import { Star } from "../lib/Star";
 import { Vcalc } from "../vcalc";
 
 export function multiFPA(star:Star, cruise: number, finalAlt: number) {
@@ -69,7 +69,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
                 if (!closestAngle) {
                     closestAngle = i;
                 } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
-                    console.log("kajsdhgfkajshdfkjashdf"); // FIXME: this probably needs a fix
+                    console.log("closer angle to idealangle found"); // FIXME: this probably needs a fix
                     closestAngle = i;
                 }
             }
