@@ -31,7 +31,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
 
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
-        const constraints = [leg.startPoint.bottoms, leg.startPoint.tops]
+        const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
         // Decide what to do based on next constraint
 
@@ -45,7 +45,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
         // If next constraint is a window constraint and current angle meets said constraints
         else if (vcalc.altChange(leg.length, currentAngle) + alt > constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt < constraints[1]) {
             console.log(`Current angle meets constraints; calculating with current angle (${currentAngle})`);
-            calcAlt = vcalc.altChange(leg.length, currentAngle) + alt
+            calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
         // If neither condition was true (so the constraint is a window constraint, and current angle didn't meet them), run angle iteration
         else {
@@ -75,18 +75,17 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
             currentAngle = closestAngle;
         }
 
-        calcAlt = Math.round(calcAlt);
         console.log(`FPA: ${currentAngle}`);
         console.log(`${calcAlt} at ${leg.startPoint.name}`);
+
+        calcAlt = Math.round(calcAlt);
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, calcAlt).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = calcAlt;
     }
 
 
-    var des = new Map();
-    var tempDes = des.entries();
-    console.log(tempDes); // TODO: Finish data set thingy fuck me i hate everything about this code
-    var newDes = new Map();
+    var des = new Map(Array.from(legFPAs).reverse());
 
-    return newDes;
+
+    return des;
 }
