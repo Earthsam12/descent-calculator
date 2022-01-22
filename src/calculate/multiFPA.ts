@@ -92,7 +92,6 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
     if (DEBUG_MODE) {console.log("================================")};
 
-
     var des = new Map(Array.from(legFPAs).reverse());
     des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
     des.set('TOD', parseFloat(vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))).toFixed(1)));
