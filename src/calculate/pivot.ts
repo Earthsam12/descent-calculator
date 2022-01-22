@@ -10,7 +10,7 @@ import { Vcalc } from "../vcalc";
  * @param pivotPoint what waypoint to pivot FPAs off of
  * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
  */
-export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: Point) {
+export function Pivot(star:Star, cruise: number, pivotPoint: Point) {
     const vcalc = new Vcalc();
     var angles: number[] = [];
     var a = 0;

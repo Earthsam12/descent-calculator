@@ -30,7 +30,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     if (rigidPoints.length === 2) {
         var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1]);  
     } else if (rigidPoints.length === 1) {
-        var result = Pivot(star, cruise, finalAlt, rigidPoints[0]);
+        var result = Pivot(star, cruise, rigidPoints[0]);
     } else {
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
