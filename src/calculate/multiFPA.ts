@@ -1,7 +1,14 @@
 import { Star } from "../lib/Star";
 import { Vcalc } from "../vcalc";
 
-export function multiFPA(star:Star, cruise: number, finalAlt: number) {
+/**
+ * @param star Star object
+ * @param cruise cruise altitude in feet
+ * @param finalAlt desired altitude at final waypoint in feet
+ * @param DEBUG_MODE whether or not to print debug info
+ * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
+ */
+export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE: boolean) {
     const vcalc = new Vcalc();
 
     var angles: number[] = [];
@@ -30,7 +37,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
     var legFPAs = new Map();
 
     for (let index = 0; index < revLegs.length; index++) {
-        console.log("================================")
+        if (DEBUG_MODE) {console.log("================================")}
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
@@ -38,19 +45,19 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
 
         // If next constraint is rigid
         if (constraints[0] == constraints[1]) {
-            console.log('Constraint is rigid; calculating required angle');
+            if (DEBUG_MODE) {console.log('Constraint is rigid; calculating required angle')};
             const fpa = vcalc.desAngle(leg.length, constraints[0] - alt);
             calcAlt = vcalc.altChange(leg.length, fpa) + alt;
             currentAngle = fpa;
         }
         // If next constraint is a window constraint and current angle meets said constraints
         else if (vcalc.altChange(leg.length, currentAngle) + alt > constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt < constraints[1]) {
-            console.log(`Current angle meets constraints; calculating with current angle (${currentAngle})`);
+            if (DEBUG_MODE) {console.log(`Current angle meets constraints; calculating with current angle (${currentAngle})`)};
             calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
         // If neither condition was true (so the constraint is a window constraint, and current angle didn't meet them), run angle iteration
         else {
-            console.log('Current angle doesn\'t work; Running angle iteration');
+            if (DEBUG_MODE) {console.log('Current angle doesn\'t work; Running angle iteration')};
             var solved: boolean = false;
             var validAngles: number[] = [];
             for (let index = 0; index < angles.length; index++) {
@@ -69,22 +76,21 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
                 if (!closestAngle) {
                     closestAngle = i;
                 } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
-                    console.log("closer angle to idealangle found"); // FIXME: this probably needs a fix
+                    if (DEBUG_MODE) {console.log("closer angle to idealangle found")}; // FIXME: this probably needs a fix
                     closestAngle = i;
                 }
             }
             currentAngle = closestAngle;
         }
 
-        console.log(`FPA: ${currentAngle}`);
-        console.log(`${calcAlt} at ${leg.startPoint.name}`);
+        if (DEBUG_MODE) {console.log(`FPA: ${currentAngle}`)};
+        if (DEBUG_MODE) {console.log(`${calcAlt} at ${leg.startPoint.name}`)};
 
         calcAlt = Math.round(calcAlt);
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, calcAlt).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = calcAlt;
     }
-    console.log("================================")
-
+    if (DEBUG_MODE) {console.log("================================")};
 
 
     var des = new Map(Array.from(legFPAs).reverse());
