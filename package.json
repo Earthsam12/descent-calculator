@@ -21,7 +21,6 @@
   "homepage": "https://github.com/Earthsam12/Descent-Calculator#readme",
   "dependencies": {
     "ts-node": "^10.4.0",
-    "tsc": "^2.0.4",
     "typescript": "^4.5.5"
   }
 }
