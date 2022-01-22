@@ -30,6 +30,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
     var legFPAs = new Map();
 
     for (let index = 0; index < revLegs.length; index++) {
+        console.log("================================")
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
@@ -82,10 +83,13 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number) {
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, calcAlt).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = calcAlt;
     }
+    console.log("================================")
+
 
 
     var des = new Map(Array.from(legFPAs).reverse());
-
+    des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
+    des.set('TOD', vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))));
 
     return des;
 }
