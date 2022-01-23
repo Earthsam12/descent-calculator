@@ -28,7 +28,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 
     if (rigidPoints.length === 2) {
-        var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1]);  
+        var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
     } else if (rigidPoints.length === 1) {
         var result = Pivot(star, cruise, finalAlt, rigidPoints[0]);
     } else {
