@@ -21,8 +21,14 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
     
     var rigidPoints = [];
-    for (const leg of star.legs) {
-        if (leg.startPoint.tops === leg.startPoint.bottoms) {
+    for (let i = 0; i < star.legs.length; i++) {
+        const leg = star.legs[i];
+        if (leg === star.legs[star.legs.length-1]) {
+            if (leg.endPoint.tops === leg.endPoint.bottoms) {
+                rigidPoints.push(leg.endPoint);
+            }
+        }
+        if (leg.startPoint.bottoms === leg.startPoint.tops) {
             rigidPoints.push(leg.startPoint);
         }
     }
@@ -46,21 +52,21 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 // FOR TESTING
 
-import { TRUPS4 as STAR } from "./devData/test_star_data";
+import { NITZR3 as STAR } from "./devData/test_star_data";
 const des = calcDes(STAR, 39000, 9000, true);
 console.log(des);
 
 // TEMP: for testing
-var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1]}\n ║ \n`;
-for (const i of Array.from(des)) {
-    if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
-        desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
-        break;
-    }
-    desTree += ` ╠════════════════Point: ${i[0].slice(0,5)}    Alt: ${Array.from(i[1])[0][1]}\n`;
-    desTree += ' ║ \n'
-    desTree += `${i[1].get('LEG FPA')}°\n`
-    desTree += ' ║ \n'
-}
+// var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1]}\n ║ \n`;
+// for (const i of Array.from(des)) {
+//     if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
+//         desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
+//         break;
+//     }
+//     desTree += ` ╠════════════════Point: ${i[0].slice(0,5)}    Alt: ${Array.from(i[1])[0][1]}\n`;
+//     desTree += ' ║ \n'
+//     desTree += `${i[1].get('LEG FPA')}°\n`
+//     desTree += ' ║ \n'
+// }
 
-console.log(desTree);
+// console.log(desTree);
