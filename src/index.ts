@@ -23,21 +23,19 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     var rigidPoints = [];
     for (let i = 0; i < star.legs.length; i++) {
         const leg = star.legs[i];
-        if (leg === star.legs[star.legs.length-1]) {
-            if (leg.endPoint.tops === leg.endPoint.bottoms) {
-                rigidPoints.push(leg.endPoint);
-            }
-        }
         if (leg.startPoint.bottoms === leg.startPoint.tops) {
             rigidPoints.push(leg.startPoint);
         }
     }
 
     if (rigidPoints.length === 2) {
+        if (DEBUG_MODE) {console.log('running rigid check')}
         var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
     } else if (rigidPoints.length === 1) {
         var result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
+        if (DEBUG_MODE) {console.log('running pivot')}
     } else {
+        if (DEBUG_MODE) {console.log('running multifpa')}
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
@@ -52,7 +50,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 // FOR TESTING
 
-import { NITZR3 as STAR } from "./devData/test_star_data";
+import { TRUPS4 as STAR } from "./devData/test_star_data";
 const des = calcDes(STAR, 39000, 9000, true);
 console.log(des);
 
