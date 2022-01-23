@@ -16,7 +16,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     const vcalc = new Vcalc();
     
     if (finalAlt > star.legs[star.legs.length-1].endPoint.tops || finalAlt < star.legs[star.legs.length-1].endPoint.bottoms) {
-        console.log('Overwriting finalAlt because of constraints'); // for debugging
+        if (DEBUG_MODE) {console.log('Overwriting finalAlt because of constraints')};
         finalAlt = (star.legs[star.legs.length-1].endPoint.tops + star.legs[star.legs.length-1].endPoint.bottoms) / 2;
     }
     
@@ -30,7 +30,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     if (rigidPoints.length === 2) {
         var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
     } else if (rigidPoints.length === 1) {
-        var result = Pivot(star, cruise, finalAlt, rigidPoints[0]);
+        var result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
     } else {
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
@@ -46,19 +46,19 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 // FOR TESTING
 
-import { TRUPS4 as STAR } from "./devData/test_star_data";
-const des = calcDes(STAR, 39000, 11000, false);
+import { FAKEE1 as STAR } from "./devData/test_star_data";
+const des = calcDes(STAR, 39000, 9000, true);
 console.log(des);
 
 // TEMP: for testing
-var desTree: string = ` ├───────────────TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ├* Leg FPA: ${des.get('TOD')[1]}\n`;
-for (const i of Array.from(des)) {
-    if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
-        desTree += ` └───────────────Point: ${i[0]}    Alt: ${i[1]}\n`;
-        break;
-    }
-    desTree += ` ├───────────────Point: ${i[0].slice(0,5)}    Alt: ${Array.from(i[1])[0][1]}\n`;
-    desTree += ` ├─*Leg FPA: ${i[1].get('LEG FPA')}\n`
-}
+// var desTree: string = ` ├───────────────TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ├* Leg FPA: ${des.get('TOD')[1]}\n`;
+// for (const i of Array.from(des)) {
+//     if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
+//         desTree += ` └───────────────Point: ${i[0]}    Alt: ${i[1]}\n`;
+//         break;
+//     }
+//     desTree += ` ├───────────────Point: ${i[0].slice(0,5)}    Alt: ${Array.from(i[1])[0][1]}\n`;
+//     desTree += ` ├─*Leg FPA: ${i[1].get('LEG FPA')}\n`
+// }
 
-console.log(desTree);
+// console.log(desTree);
