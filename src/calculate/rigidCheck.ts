@@ -16,8 +16,7 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
     const vcalc = new Vcalc();
     var des = new Map();
 
-    console.log();
-
     // TODO: rigid check
+    // TODO: final alt = vcalc.offsetAltChange with 0 as x
     return des; // TODO: Rememeber to return an empty map if angle(s) didn't work
 }

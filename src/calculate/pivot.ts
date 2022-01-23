@@ -19,8 +19,10 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
         angles.push(a);
     }
 
+    // TODO: check geogebra: https://www.geogebra.org/calculator/rcwh9jru
     var des = new Map();
     des.set('RANJR_JARHD', new Map().set('RANJR', 25704).set('LEG FPA', 2.1));
     // TODO: pivot
+    // TODO: final alt = vcalc.offsetAltChange with 0 as x
     return des; // TODO: Rememeber to return an empty map if angle(s) didn't work
 }
