@@ -3,9 +3,9 @@ import { Point } from "./Point";
 
 export class Star {
     public readonly starName: string;
-    public readonly pointNames: string[];
-    public readonly constraints: number[][];
-    public readonly legLengths: number[];
+    private readonly pointNames: string[];
+    private readonly constraints: number[][];
+    private readonly legLengths: number[];
     public readonly points: Point[];
     public readonly legs: Leg[];
     public readonly length: number = 0;
