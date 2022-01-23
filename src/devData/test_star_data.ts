@@ -17,7 +17,7 @@ export const TRUPS4 = new Star(
     [9, 9, 12, 7, 8, 13, 8]
 )
 
-// For RigidCheck Alg
+// For pivot Alg
 export const NITZR3 = new Star(
     "NITZR3",
     ['KBEEE', 'DEMLL', 'NITZR', 'WRSAW', 'DAHRL', 'GDNEE', 'ELLKO', 'SAVVG', 'GREAK'],
