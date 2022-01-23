@@ -1,5 +1,6 @@
 import { Star } from "../lib/Star";
 
+// For MultiFPA alg
 export const TRUPS4 = new Star(
     "TRUPS4",
     ['RANJR', 'JARHD', 'PJAAE', 'USAAY', 'WEEDU', 'SUPRT', 'OOURR', 'TRUPS'],
@@ -16,6 +17,7 @@ export const TRUPS4 = new Star(
     [9, 9, 12, 7, 8, 13, 8]
 )
 
+// For RigidCheck Alg
 export const NITZR3 = new Star(
     "NITZR3",
     ['KBEEE', 'DEMLL', 'NITZR', 'WRSAW', 'DAHRL', 'GDNEE', 'ELLKO', 'SAVVG', 'GREAK'],
@@ -33,6 +35,7 @@ export const NITZR3 = new Star(
     [28, 13, 4, 8, 10, 6, 6, 8]
 )
 
+// For pivot Alg
 export const FAKEE1 = new Star(
     "FAKEE1",
     ['AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE'],

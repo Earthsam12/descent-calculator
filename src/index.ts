@@ -30,12 +30,12 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     if (rigidPoints.length === 2) {
         var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1]);  
     } else if (rigidPoints.length === 1) {
-        var result = Pivot(star, cruise, rigidPoints[0]);
+        var result = Pivot(star, cruise, finalAlt, rigidPoints[0]);
     } else {
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
-    if (result.size === 0) {
+    if (result.size === 0) { // ? Consider making unsuccessful calculations return `undefined` instead of empty map
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE);
     } else {
         return result;
@@ -46,5 +46,5 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 // FOR TESTING
 
-import { TRUPS4 } from "./devData/test_star_data";
-console.log(calcDes(TRUPS4, 39000, 11000, true));
+import { NITZR3 as STAR } from "./devData/test_star_data";
+console.log(calcDes(STAR, 39000, 11000, true));
