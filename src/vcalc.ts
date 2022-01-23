@@ -8,7 +8,7 @@ export class Vcalc {
     altChange (distance: number, angle: number) {
         return (Math.tan((angle * Math.PI) / 180) * distance) / 0.000164579;
     }
-    offsetAltChange (distance: number, angle: number, x1: number, y1: number) {
+    pointSlopeAlt (distance: number, angle: number, x1: number, y1: number) {
         return ((Math.tan((angle * Math.PI) / 180) * (distance - x1)) / 0.000164579) + y1;
     }
 }

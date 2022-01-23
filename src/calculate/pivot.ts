@@ -59,7 +59,7 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             if (leg.startPoint === pivotPoint) {continue};
 
             if (index === 0) {
-                calcAlt = vcalc.offsetAltChange(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
+                calcAlt = vcalc.pointSlopeAlt(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
                 if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
                 // tODO: dATA!!!1111!!
                 /**
@@ -70,7 +70,7 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
                  * */
             }
 
-            calcAlt = vcalc.offsetAltChange(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
+            calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
             if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
             if (!(calcAlt > constraints[0] && calcAlt < constraints[1])) {
                 isValidAngle = false;
