@@ -1,6 +1,6 @@
 {
   "name": "descent-calculator",
-  "version": "0.4.0",
+  "version": "0.1.0",
   "description": "Simple calculator that can provide FPA(s) for a descent path given constraints",
   "main": "index.js",
   "scripts": {
