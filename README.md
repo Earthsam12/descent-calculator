@@ -52,7 +52,7 @@ It starts at the end of the STAR and works backwards. For each leg, it checks wh
  - If the next constraint is a 'window' constraint, AND the current angle meets those constraints, then it keeps the current angle and calculates the altitude given that angle
  - If the next constraint is a 'window' constraint BUT the current angle didn't meet those constraints, then it runs 'angle iteration' (essentially what Pivot does) and finds what angles meet those constraints, and picks which one is closest to the ideal angle.
  
- Multi FPA will always return a path, but it may have several different flight path angles for some segments
+ Multi FPA will always return a path, but it may have several different flight path angles for some segments.
  
  ### Flow Chart of Calculation Methods:
  ![image](https://user-images.githubusercontent.com/93292288/150715347-e894ba77-11bd-47f6-85ae-9ca61fa16afc.png)
