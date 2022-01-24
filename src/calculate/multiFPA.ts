@@ -36,6 +36,8 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     var calcAlt: number;
     var legFPAs = new Map();
 
+    // ? Consider giving this method foresight (look further down path for rigid constriants)
+
     for (let index = 0; index < revLegs.length; index++) {
         if (DEBUG_MODE) {console.log("================================")}
         const leg = revLegs[index];
