@@ -52,10 +52,11 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
     var validAngles = [];
     var solved = false;
     for (const angle of angles) {
-        if (DEBUG_MODE) {console.log("================================")}
-        if (DEBUG_MODE) {console.log(`testing angle ${angle.toFixed(1)}`)}
+        if (DEBUG_MODE) {console.log("================================")};
+        if (DEBUG_MODE) {console.log(`testing angle ${angle.toFixed(1)}`)};
         var wptDistFromEnd = 0;
-        var isValidAngle = true
+        var isValidAngle = true;
+
         for (let index = 0; index < revLegs.length; index++) {
             const leg = revLegs[index];
             const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
@@ -77,6 +78,7 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
                 break;
             }
         }
+
         if (isValidAngle) {
             validAngles.push(angle);
             solved = true;
@@ -84,28 +86,32 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             break;
         }
     }
+
     if (validAngles.length === 0) {
         return undefined;
     }
+
     var closestAngle = undefined;
         for (const i of validAngles) {
             if (!closestAngle) {
                 closestAngle = i;
             } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
-                if (DEBUG_MODE) {console.log("closer angle to idealangle found")}; // FIXME: this probably needs a fix
+                if (DEBUG_MODE) {console.log("closer angle to idealangle found")};
                 closestAngle = i;
             }
         }
 
     if (DEBUG_MODE) {console.log(`Best angle: ${closestAngle}`)};
-    // data stuff
+
     wptDistFromEnd = 0;
     for (const leg of revLegs) {
         wptDistFromEnd += leg.length;
         des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(vcalc.pointSlopeAlt(wptDistFromEnd, closestAngle, pivotPointDistFromEnd, pivotPoint.tops))).set('LEG FPA', closestAngle));
     }
+
     var des = new Map(Array.from(des).reverse());
     des.set(revLegs[0].endPoint.name, Math.round(vcalc.pointSlopeAlt(0, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)));
     des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), closestAngle).toFixed(1))), closestAngle]);
+    
     return des;
 }
