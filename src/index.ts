@@ -56,7 +56,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 import { TRUPS4 as STAR } from "./devData/test_star_data";
 const des = calcDes(STAR, 39000, 9000, true);
-// console.log(des);
+// // console.log(des);
 
 // TEMP: for testing
 var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
