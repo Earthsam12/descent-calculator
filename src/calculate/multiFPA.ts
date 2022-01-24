@@ -111,5 +111,5 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))).toFixed(1)), parseFloat(currentAngle.toFixed(3))]);
 
-    return des;
+    return des; // TODO: better data return
 }
