@@ -55,7 +55,7 @@ It starts at the end of the STAR and works backwards. For each leg, it checks wh
  Multi FPA will always return a path, but it may have several different flight path angles for some segments.
  
  ### Flow Chart of Calculation Methods:
- ![image](https://user-images.githubusercontent.com/93292288/150715347-e894ba77-11bd-47f6-85ae-9ca61fa16afc.png)
+ ![image](https://user-images.githubusercontent.com/93292288/150719731-27551302-3ca7-4511-96a5-01d7d3597d36.png)
 
  
  ## Dealing with the returned data:
