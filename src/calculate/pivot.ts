@@ -37,12 +37,17 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
     var calcAlt: number;
 
     var pivotPointDistFromEnd = 0;
-    for (const i of revLegs) {
-        if (i.startPoint === pivotPoint) {
-            pivotPointDistFromEnd += i.length;
+    for (let i = 0; i < revLegs.length; i++) {
+        const leg = revLegs[i];
+        if (i === 0) {
+            if (leg.endPoint === pivotPoint) {
+                break;
+            }
+        }
+        pivotPointDistFromEnd += leg.length;
+        if (leg.startPoint === pivotPoint) {
             break;
         }
-        pivotPointDistFromEnd += i.length;
     }
     var validAngles = [];
     var solved = false;
@@ -50,29 +55,24 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
         if (DEBUG_MODE) {console.log("================================")}
         if (DEBUG_MODE) {console.log(`testing angle ${angle.toFixed(1)}`)}
         var wptDistFromEnd = 0;
-        
         var isValidAngle = true
         for (let index = 0; index < revLegs.length; index++) {
             const leg = revLegs[index];
             const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
             wptDistFromEnd += leg.length;
-            if (leg.startPoint === pivotPoint) {continue};
 
             if (index === 0) {
                 calcAlt = vcalc.pointSlopeAlt(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
                 if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
-                // tODO: dATA!!!1111!!
-                /**
-                 * * The issue here is that the last point in the star (revLegs index 0) is actually being considered.
-                 * * Which means that the des map that is returned will be very fucky because that point will be there
-                 * * When it usually isn't
-                 * TODO: fix it lmao
-                 * */
+                if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
+                    isValidAngle = false;
+                    break;
+                }
             }
 
             calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
             if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
-            if (!(calcAlt > constraints[0] && calcAlt < constraints[1])) {
+            if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
                 isValidAngle = false;
                 break;
             }
@@ -84,6 +84,9 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             break;
         }
     }
+    if (validAngles.length === 0) {
+        return new Map();
+    }
     var closestAngle = undefined;
         for (const i of validAngles) {
             if (!closestAngle) {
@@ -93,10 +96,16 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
                 closestAngle = i;
             }
         }
+
     if (DEBUG_MODE) {console.log(`Best angle: ${closestAngle}`)};
-    // * check geogebra: https://www.geogebra.org/calculator/rcwh9jru
-    
-    // TODO: pivot
-    // TODO: final alt = vcalc.offsetAltChange with 0 as x
-    return des.set('bruheg', 'eeeeeee'); // TODO: Rememeber to return an empty map if angle(s) didn't work
+    // data stuff
+    wptDistFromEnd = 0;
+    for (const leg of revLegs) {
+        wptDistFromEnd += leg.length;
+        des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(vcalc.pointSlopeAlt(wptDistFromEnd, closestAngle, pivotPointDistFromEnd, pivotPoint.tops))).set('LEG FPA', closestAngle));
+    }
+    var des = new Map(Array.from(des).reverse());
+    des.set(revLegs[0].endPoint.name, Math.round(vcalc.pointSlopeAlt(0, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)));
+    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), closestAngle).toFixed(1))), closestAngle]);
+    return des;
 }
