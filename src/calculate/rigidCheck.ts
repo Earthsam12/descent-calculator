@@ -53,28 +53,30 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
     }
 
     var calcAlt: number;
-    var wptDistFromEnd = 0;
+    var wptDistFromEnd = 0
+    var finalPointCalcAlt: number;
 
-    if (DEBUG_MODE) {console.log(`testing ideal angle (${idealAngle})`)}
-    for (const leg of revLegs) {
+    if (DEBUG_MODE) {console.log(`testing required angle (${requiredAngle})`)}
+    for (const index = 0; index < revLegs.length; index++) {
+        leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
         if (index === 0) {
-            calcAlt = vcalc.pointSlopeAlt(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
+            calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, pivotPointDistFromEnd, pivotPoint.tops);
             if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
             if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
                 return undefined;
             }
-            // TODO: data
+            finalPointCalcAlt = calcAlt;
         }
-        calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
+        calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, pivotPointDistFromEnd, pivotPoint.tops);
         if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
         if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
             return undefined;
         }
-        // TODO: data
+        des.set(leg.name, new Map().set(leg.startPoint.name, calcAlt).set('LEG FPA', requiredAngle))
     }
-
-
-    // TODO: final alt = vcalc.offsetAltChange with 0 as x
-    return des; // TODO: Rememeber to return undefined if angle didn't work
+    var des = new Map(Array.from(des).reverse());
+    des.set(revLegs[0].endpoint, finalPointCalcAlt);
+    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), requiredAngle).toFixed(1))), requriedAngle]);
+    return des;
 }
