@@ -51,14 +51,12 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 }
 
 
-
-// FOR TESTING
+// TEMP: FOR TESTING
 
 import { TRUPS4 as STAR } from "./devData/test_star_data";
 const des = calcDes(STAR, 39000, 9000, true); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
 // // console.log(des); // TEMP: testing
 
-// TEMP: for testing
 var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of Array.from(des)) {
     if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
