@@ -37,6 +37,14 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     var legFPAs = new Map();
 
     // TODO: foresight (look further down path for rigid constriants)
+    /**
+     * constatly check if required angle from alt => first target alt works
+     * ^ unless there are rigid points ahead, in which case
+     * check if required angle from alt => rigid point works
+     * if so, skip to that point
+     * if not, cont' as normal
+     * this should reduce the # of different fpas
+     */
 
     for (let index = 0; index < revLegs.length; index++) {
         if (DEBUG_MODE) {console.log("================================")};
