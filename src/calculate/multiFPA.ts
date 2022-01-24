@@ -62,7 +62,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
         }
 
         // If next constraint is a window constraint and current angle meets said constraints
-        else if (vcalc.altChange(leg.length, currentAngle) + alt > constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt < constraints[1]) {
+        else if (vcalc.altChange(leg.length, currentAngle) + alt >= constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt <= constraints[1]) {
             if (DEBUG_MODE) {console.log(`Current angle meets constraints; calculating with current angle (${currentAngle})`)};
             calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
@@ -75,9 +75,9 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
 
             for (let index = 0; index < angles.length; index++) {
                 const angle = angles[index];
-                const calcAlt = vcalc.altChange(leg.length, angle) + alt;
+                const tempCalcAlt = vcalc.altChange(leg.length, angle) + alt;
 
-                if (calcAlt > constraints[0] && calcAlt < constraints[1]) {
+                if (tempCalcAlt >= constraints[0] && tempCalcAlt <= constraints[1]) {
                     validAngles.push(angle);
                     solved = true;
                 } else if (solved) {
@@ -97,10 +97,11 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
             }
 
             currentAngle = closestAngle;
+            calcAlt = vcalc.altChange(leg.length, closestAngle) + alt;
         }
 
         if (DEBUG_MODE) {console.log(`FPA: ${currentAngle}`)};
-        if (DEBUG_MODE) {console.log(`${calcAlt} at ${leg.startPoint.name}`)};
+        if (DEBUG_MODE) {console.log(`${Math.round(calcAlt)} at ${leg.startPoint.name}`)};
 
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = Math.round(calcAlt);
