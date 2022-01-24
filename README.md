@@ -1,5 +1,4 @@
-# Descent-Calculator
-Simple calculator that can provide FPA(s) for a descent path given constraints
+# Descent Calculator
+### Simple calculator that can give FPA(s) and TOD accounting for constraints
 
-Highly WIP
-Also private, dunno why i made a readme for a private repo...
+<hr/>
