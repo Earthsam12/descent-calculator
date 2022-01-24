@@ -30,19 +30,19 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
             rigidPoints.push(leg.startPoint);
         }
     }
-
+    var result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
         if (DEBUG_MODE) {console.log('running rigid check')}
-        var result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
+        result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
     } else if (rigidPoints.length === 1) {
         if (DEBUG_MODE) {console.log('running pivot')}
-        var result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
+        result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
     } else {
         if (DEBUG_MODE) {console.log('running multifpa')}
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
-    if (result.size === 0) { // ? Consider making unsuccessful calculations return `undefined` instead of empty map
+    if (!result) {
         if (DEBUG_MODE) {console.log('that failed, running multifpa')}
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE);
     } else {

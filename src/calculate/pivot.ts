@@ -85,7 +85,7 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
         }
     }
     if (validAngles.length === 0) {
-        return new Map();
+        return undefined;
     }
     var closestAngle = undefined;
         for (const i of validAngles) {
