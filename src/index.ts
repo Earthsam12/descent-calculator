@@ -53,7 +53,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
 // TEMP: FOR TESTING
 
-import { TRUPS4 as STAR } from "./devData/test_star_data";
+import { TRUPS4 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, true); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
 // // console.log(des); // TEMP: testing
 
