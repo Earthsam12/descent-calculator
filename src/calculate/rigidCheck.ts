@@ -32,7 +32,7 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
 
     var point1DistFromEnd = 0;
     for (const leg of revLegs) {
-        if (leg.endPoint === revLegs[0].endPoint && leg.endpoint === point1) {
+        if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point1) {
             break;
         }
         point1DistFromEnd += leg.length;
@@ -43,40 +43,43 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
 
     var point2DistFromEnd = 0;
     for (const leg of revLegs) {
-        if (leg.endPoint === revLegs[0].endPoint && leg.endpoint === point2) { // Theoretically not possible but just to be safe
+        if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point2) { // Theoretically not possible but just to be safe
             break;
         }
-        point1DistFromEnd += leg.length;
+        point2DistFromEnd += leg.length;
         if (leg.startPoint === point2) {
             break;
         }
     }
+
+    const requiredAngle = vcalc.desAngle(Math.abs(point2DistFromEnd - point1DistFromEnd), Math.abs(point2.tops - point1.tops));
 
     var calcAlt: number;
     var wptDistFromEnd = 0
     var finalPointCalcAlt: number;
 
     if (DEBUG_MODE) {console.log(`testing required angle (${requiredAngle})`)}
-    for (const index = 0; index < revLegs.length; index++) {
-        leg = revLegs[index];
+    for (let index = 0; index < revLegs.length; index++) {
+        const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
         if (index === 0) {
-            calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, pivotPointDistFromEnd, pivotPoint.tops);
+            calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, point1DistFromEnd, point1.tops);
             if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
             if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
                 return undefined;
             }
             finalPointCalcAlt = calcAlt;
         }
-        calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, pivotPointDistFromEnd, pivotPoint.tops);
+        wptDistFromEnd += leg.length;
+        calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, point1DistFromEnd, point1.tops);
         if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
-        if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
+        if (!(Math.round(calcAlt) >= constraints[0] && Math.round(calcAlt) <= constraints[1])) { // * sorta sus rounding since i dont want to ignore rigid points
             return undefined;
         }
-        des.set(leg.name, new Map().set(leg.startPoint.name, calcAlt).set('LEG FPA', requiredAngle))
+        des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(requiredAngle.toFixed(3))));
     }
     var des = new Map(Array.from(des).reverse());
-    des.set(revLegs[0].endpoint, finalPointCalcAlt);
-    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), requiredAngle).toFixed(1))), requriedAngle]);
+    des.set(revLegs[0].endPoint.name, finalPointCalcAlt);
+    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), requiredAngle).toFixed(1))), requiredAngle]);
     return des;
 }
