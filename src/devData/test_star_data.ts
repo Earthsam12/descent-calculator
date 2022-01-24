@@ -48,3 +48,5 @@ export const FAKEE1 = new Star(
     ],
     [5, 6, 5, 6]
 )
+
+// TODO: https://chartfox.org/KLAX#KLAX_57245
