@@ -62,7 +62,6 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
      */
 
     for (let index = 0; index < revLegs.length; index++) {
-        if (DEBUG_MODE) {console.log("================================")};
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
@@ -70,7 +69,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
 
         // If next constraint is rigid
         if (constraints[0] == constraints[1]) {
-            if (DEBUG_MODE) {console.log('Constraint is rigid; calculating required angle')};
+            if (DEBUG_MODE) {console.log(' * Constraint is rigid; calculating required angle')};
             const fpa = vcalc.desAngle(leg.length, constraints[0] - alt);
             calcAlt = vcalc.altChange(leg.length, fpa) + alt;
             currentAngle = fpa;
@@ -78,13 +77,13 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
 
         // If next constraint is a window constraint and current angle meets said constraints
         else if (vcalc.altChange(leg.length, currentAngle) + alt >= constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt <= constraints[1]) {
-            if (DEBUG_MODE) {console.log(`Current angle meets constraints; calculating with current angle (${currentAngle})`)};
+            if (DEBUG_MODE) {console.log(` * Current angle meets constraints; calculating with current angle (${currentAngle})`)};
             calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
 
         // If neither condition was true (so the constraint is a window constraint, and current angle didn't meet them), run angle iteration
         else {
-            if (DEBUG_MODE) {console.log('Current angle doesn\'t work; Running angle iteration')};
+            if (DEBUG_MODE) {console.log(' * Current angle doesn\'t work; Running angle iteration')};
             var solved: boolean = false;
             var validAngles: number[] = [];
 
@@ -106,7 +105,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
                 if (!closestAngle) {
                     closestAngle = i;
                 } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
-                    if (DEBUG_MODE) {console.log("closer angle to idealangle found")};
+                    if (DEBUG_MODE) {console.log(" *- Closer angle to idealangle found")};
                     closestAngle = i;
                 }
             }
@@ -117,6 +116,17 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
 
         if (DEBUG_MODE) {console.log(`FPA: ${currentAngle}`)};
         if (DEBUG_MODE) {console.log(`${Math.round(calcAlt)} at ${leg.startPoint.name}`)};
+        if (DEBUG_MODE) {
+            console.log(`
+Leg:                                            ${leg.name}
+Leg Starting Waypoint:                          ${leg.startPoint.name}
+Leg Terminal Waypoint:                          ${leg.endPoint.name}
+Leg Length:                                     ${leg.length}
+${leg.startPoint.name} Top Constraint:          ${leg.startPoint.tops}
+${leg.startPoint.name} Bottom Constraint:       ${leg.startPoint.bottoms}
+${leg.startPoint.name} Calculated Altitude:     ${calcAlt}\
+`); /** FIXME: spacing!!! */
+        }
 
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = Math.round(calcAlt);
@@ -127,5 +137,18 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))).toFixed(1)), parseFloat(currentAngle.toFixed(3))]);
 
+    // TODO: better debug for all methods:
+    /**
+     * print("Leg:                       {}".format(leg.name))
+     * print("Leg Starting Waypoint:     {}".format(leg.startPoint.name))
+     * print("Leg Terminal Waypoint:     {}".format(leg.endPoint.name))
+     * print("{} Top Altitude:        {}".format(leg.startPoint.name, maxx))
+     * print("{} Bottom Altitude:     {}".format(leg.startPoint.name, mins))
+     * print("Leg Length:                {}".format(dist))
+     * print("{} Calculated Altitude: {}".format(leg.startPoint.name, round(alt + vcalc.altChange(dist, angle))))
+     * print("Meets Constraints:         {}".format(round(alt + vcalc.altChange(dist, angle)) in range(mins, maxx + 1)))
+     * 
+     * this is from des calculator v0.1.1
+     */
     return des; // TODO: better data return
 }
