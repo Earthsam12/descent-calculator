@@ -49,6 +49,17 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
      * else cont' as normal
      * this should reduce the # of different fpas
      */
+    /**
+     * if (required angle => first target alt meets cstrs) {
+     *  use that, calc alts and return
+     * }
+     * if (rigid points ahead) {
+     *   if (required angle to next rigid point meets all in between constraints) {
+     *      skip to that point; continue (so that we check if we can skip to the end again)
+     *   }
+     *   else {cont as normal}
+     * }
+     */
 
     for (let index = 0; index < revLegs.length; index++) {
         if (DEBUG_MODE) {console.log("================================")};
