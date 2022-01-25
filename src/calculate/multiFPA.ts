@@ -43,6 +43,10 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
      * check if required angle from alt => rigid point works
      * if so, skip to that point
      * if not, cont' as normal
+     * then after skipping to that point, check if another rigid point ahead and do same to that point if so
+     * else try to see if angle from ppos to last point @ first target altitude works
+     * if it does then cool star over
+     * else cont' as normal
      * this should reduce the # of different fpas
      */
 
