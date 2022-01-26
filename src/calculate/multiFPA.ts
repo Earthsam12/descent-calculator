@@ -117,15 +117,15 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
         if (DEBUG_MODE) {console.log(`FPA: ${currentAngle}`)};
         if (DEBUG_MODE) {console.log(`${Math.round(calcAlt)} at ${leg.startPoint.name}`)};
         if (DEBUG_MODE) {
-            console.log(`
-Leg:                                            ${leg.name}
-Leg Starting Waypoint:                          ${leg.startPoint.name}
-Leg Terminal Waypoint:                          ${leg.endPoint.name}
-Leg Length:                                     ${leg.length}
-${leg.startPoint.name} Top Constraint:          ${leg.startPoint.tops}
-${leg.startPoint.name} Bottom Constraint:       ${leg.startPoint.bottoms}
-${leg.startPoint.name} Calculated Altitude:     ${calcAlt}\
-`); /** FIXME: spacing!!! */
+            console.log(``
++ `Leg:                                            ${leg.name}\n`
++ `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
++ `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
++ `Leg Length:                                     ${leg.length}\n`
++ `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
++ `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}\n`
++ `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${calcAlt}`
+);
         }
 
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
