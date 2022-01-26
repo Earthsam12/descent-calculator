@@ -136,19 +136,5 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     var des = new Map(Array.from(legFPAs).reverse());
     des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))).toFixed(1)), parseFloat(currentAngle.toFixed(3))]);
-
-    // TODO: better debug for all methods:
-    /**
-     * print("Leg:                       {}".format(leg.name))
-     * print("Leg Starting Waypoint:     {}".format(leg.startPoint.name))
-     * print("Leg Terminal Waypoint:     {}".format(leg.endPoint.name))
-     * print("{} Top Altitude:        {}".format(leg.startPoint.name, maxx))
-     * print("{} Bottom Altitude:     {}".format(leg.startPoint.name, mins))
-     * print("Leg Length:                {}".format(dist))
-     * print("{} Calculated Altitude: {}".format(leg.startPoint.name, round(alt + vcalc.altChange(dist, angle))))
-     * print("Meets Constraints:         {}".format(round(alt + vcalc.altChange(dist, angle)) in range(mins, maxx + 1)))
-     * 
-     * this is from des calculator v0.1.1
-     */
     return des; // TODO: better data return
 }
