@@ -125,7 +125,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
 + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
 + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}\n`
 + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${calcAlt}`
-);
+); // TODO: finish new debug info logging
         }
 
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
