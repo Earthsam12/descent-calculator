@@ -12,7 +12,7 @@ import { Vcalc } from "../vcalc";
  * @param DEBUG_MODE whether or not to print debug info (false by default)
  * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
  */
-export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: Point, point2: Point, DEBUG_MODE = false) {
+export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1: Point, point2: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
     const revLegs = star.legs.slice().reverse();
 
@@ -72,7 +72,7 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
             + `Leg Length:                                     ${leg.length}\n`
             + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
             + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
-            );
+        );
 
         if (index === 0) {
             calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, point1DistFromEnd, point1.tops);
@@ -86,7 +86,7 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
         }
         wptDistFromEnd += leg.length;
         calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, point1DistFromEnd, point1.tops);
-        if (DEBUG_MODE) {console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`)};
+        if (DEBUG_MODE) { console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`) };
         if (!(Math.round(calcAlt) >= constraints[0] && Math.round(calcAlt) <= constraints[1])) { // * sorta sus rounding since i dont want to ignore rigid points
             return undefined;
         }
@@ -94,7 +94,7 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
         des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     }
 
-    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
+    if (DEBUG_MODE) { console.log('\n=========================== FINISHED ===========================\n') };
 
     return des;
 }

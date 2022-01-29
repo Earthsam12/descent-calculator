@@ -10,7 +10,7 @@ import { Vcalc } from "../vcalc";
  * @param pivotPoint what waypoint to pivot FPAs off of
  * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
  */
-export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: Point, DEBUG_MODE = false) {
+export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
 
     var angles: number[] = [];
@@ -51,8 +51,10 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
     var validAngles = [];
     var solved = false;
     for (const angle of angles) {
-        if (DEBUG_MODE) {console.log('================================================================\n\n'
-            + `Testing angle:                                  ${angle}`)};
+        if (DEBUG_MODE) {
+            console.log('================================================================\n\n'
+                + `Testing angle:                                  ${angle}`)
+        };
 
         var wptDistFromEnd = 0;
         var isValidAngle = true;
@@ -63,13 +65,13 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             wptDistFromEnd += leg.length;
 
             if (DEBUG_MODE) {
-            console.log(`Leg:                                            ${leg.name}\n`
-            + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
-            + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
-            + `Leg Length:                                     ${leg.length}\n`
-            + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
-            + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
-            );
+                console.log(`Leg:                                            ${leg.name}\n`
+                    + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
+                    + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
+                    + `Leg Length:                                     ${leg.length}\n`
+                    + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
+                    + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
+                );
             }
 
             if (index === 0) {
@@ -84,7 +86,7 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             }
 
             calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
-            if (DEBUG_MODE) {console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`)};
+            if (DEBUG_MODE) { console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`) };
             if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
                 isValidAngle = false;
                 break;
@@ -104,16 +106,16 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
     }
 
     var closestAngle = undefined;
-        for (const i of validAngles) {
-            if (!closestAngle) {
-                closestAngle = i;
-            } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
-                closestAngle = i;
-            }
+    for (const i of validAngles) {
+        if (!closestAngle) {
+            closestAngle = i;
+        } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
+            closestAngle = i;
         }
+    }
 
-    if (DEBUG_MODE) {console.log(`Closest angle to ideal angle:                   ${closestAngle}`)};
-    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
+    if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:                   ${closestAngle}`) };
+    if (DEBUG_MODE) { console.log('\n=========================== FINISHED ===========================\n') };
     var des = new Map().set('LEGS', []);
     wptDistFromEnd = 0;
     for (const leg of revLegs) {

@@ -13,16 +13,16 @@ import { RigidCheck } from "./calculate/rigidCheck";
  */
 export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
-    
-    if (finalAlt > star.legs[star.legs.length-1].endPoint.tops || finalAlt < star.legs[star.legs.length-1].endPoint.bottoms) {
-        if (DEBUG_MODE) {console.log('\n --------- Overwriting finalAlt because of constraints --------- ')};
-        finalAlt = (star.legs[star.legs.length-1].endPoint.tops + star.legs[star.legs.length-1].endPoint.bottoms) / 2;
+
+    if (finalAlt > star.legs[star.legs.length - 1].endPoint.tops || finalAlt < star.legs[star.legs.length - 1].endPoint.bottoms) {
+        if (DEBUG_MODE) { console.log('\n --------- Overwriting finalAlt because of constraints --------- ') };
+        finalAlt = (star.legs[star.legs.length - 1].endPoint.tops + star.legs[star.legs.length - 1].endPoint.bottoms) / 2;
     }
-    
+
     var rigidPoints = [];
     for (let i = 0; i < star.legs.length; i++) {
         const leg = star.legs[i];
-        if (leg.endPoint === star.points[star.points.length-1] && leg.endPoint.tops === leg.endPoint.bottoms) {
+        if (leg.endPoint === star.points[star.points.length - 1] && leg.endPoint.tops === leg.endPoint.bottoms) {
             rigidPoints.push(leg.endPoint);
         }
         if (leg.startPoint.bottoms === leg.startPoint.tops) {
@@ -31,18 +31,18 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
     var result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
-        if (DEBUG_MODE) {console.log('\n --------- Running Rigid Check ---------')}
-        result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
+        if (DEBUG_MODE) { console.log('\n --------- Running Rigid Check ---------') }
+        result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);
     } else if (rigidPoints.length === 1) {
-        if (DEBUG_MODE) {console.log('\n --------- Running Pivot ---------')}
+        if (DEBUG_MODE) { console.log('\n --------- Running Pivot ---------') }
         result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
     } else {
-        if (DEBUG_MODE) {console.log('\n --------- Running MultiFPA ---------')}
+        if (DEBUG_MODE) { console.log('\n --------- Running MultiFPA ---------') }
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
     if (!result) {
-        if (DEBUG_MODE) {console.log('\n----------------------------------\nMethod Failed, Running MultiFPA...\n----------------------------------\n')}
+        if (DEBUG_MODE) { console.log('\n----------------------------------\nMethod Failed, Running MultiFPA...\n----------------------------------\n') }
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE);
     } else {
         return result;
@@ -58,7 +58,7 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1) {
 
 import { BAYST1 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
-if (DEBUG_MODE) {console.log(des)};
+if (DEBUG_MODE) { console.log(des) };
 
 var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of des.get('LEGS')) {
