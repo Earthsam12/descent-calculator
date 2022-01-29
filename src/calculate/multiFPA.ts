@@ -54,13 +54,13 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     *       angle iter.
     */
 
+   if (DEBUG_MODE) {console.log(`\n================================================================\n`)}
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
         if (DEBUG_MODE) {
-            console.log(`\n================================================================\n\n`
-            + `Leg:                                            ${leg.name}\n`
+            console.log(`\nLeg:                                            ${leg.name}\n`
             + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
             + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
             + `Leg Length:                                     ${leg.length}\n`
