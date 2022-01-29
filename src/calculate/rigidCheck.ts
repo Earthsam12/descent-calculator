@@ -58,13 +58,27 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
     var wptDistFromEnd = 0
     var finalPointCalcAlt: number;
 
-    if (DEBUG_MODE) {console.log(`testing required angle (${requiredAngle})`)}
+    if (DEBUG_MODE) {
+        console.log(`================================================================\n\n`
+            + `Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`)
+    }
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
+
+        console.log(`\nLeg:                                            ${leg.name}\n`
+            + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
+            + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
+            + `Leg Length:                                     ${leg.length}\n`
+            + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
+            + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
+            );
+
         if (index === 0) {
             calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, point1DistFromEnd, point1.tops);
-            if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
+            if (DEBUG_MODE) {
+                console.log(`${leg.endPoint} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`)
+            };
             if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
                 return undefined;
             }
@@ -72,12 +86,15 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
         }
         wptDistFromEnd += leg.length;
         calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, point1DistFromEnd, point1.tops);
-        if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
+        if (DEBUG_MODE) {console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`)};
         if (!(Math.round(calcAlt) >= constraints[0] && Math.round(calcAlt) <= constraints[1])) { // * sorta sus rounding since i dont want to ignore rigid points
             return undefined;
         }
         des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(requiredAngle.toFixed(3))));
     }
+
+    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
+
     var des = new Map(Array.from(des).reverse());
     des.set(revLegs[0].endPoint.name, finalPointCalcAlt);
     des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), requiredAngle).toFixed(1))), requiredAngle]);
