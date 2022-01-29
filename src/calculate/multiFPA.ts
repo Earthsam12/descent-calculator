@@ -34,7 +34,7 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     var currentAngle = idealAngle;
     const revLegs = star.legs.slice().reverse();
     var calcAlt: number;
-    var legFPAs = new Map();
+    var des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
 
     // TODO: foresight (look further down path for rigid constriants)
    /**
@@ -113,20 +113,27 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
             calcAlt = vcalc.altChange(leg.length, closestAngle) + alt;
         }
 
+        if (index === 0) {
+            if (DEBUG_MODE) {
+                console.log(`${leg.endPoint.name} Calculated Altitude:`.padEnd(48, ' ') + finalAlt);
+            }
+            des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
+        }
+
         if (DEBUG_MODE) {
             console.log(``
             + `Leg FPA:                                        ${parseFloat(currentAngle.toFixed(3))}\n`
             + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
         }
 
-        legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
+        // des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
+        des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(currentAngle.toFixed(3))]);
         alt = Math.round(calcAlt);
     }
 
     if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
 
-    var des = new Map(Array.from(legFPAs).reverse());
-    des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
-    des.set('TOD', [parseFloat(vcalc.desDistance(cruise - Array.from(Array.from(des)[0][1])[0][1], parseFloat(currentAngle.toFixed(3))).toFixed(1)), parseFloat(currentAngle.toFixed(3))]);
-    return des; // TODO: better data return
+    des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]])
+    // ? Should we use a different FPA for the TOD => first point? sorta like idlepath?
+    return des;
 }

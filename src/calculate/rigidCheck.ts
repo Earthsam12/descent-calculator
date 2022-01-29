@@ -14,7 +14,6 @@ import { Vcalc } from "../vcalc";
  */
 export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: Point, point2: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
-    var des = new Map();
     const revLegs = star.legs.slice().reverse();
 
     var firstTargetAltitude: number;
@@ -55,8 +54,9 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
     const requiredAngle = vcalc.desAngle(Math.abs(point2DistFromEnd - point1DistFromEnd), Math.abs(point2.tops - point1.tops));
 
     var calcAlt: number;
-    var wptDistFromEnd = 0
+    var wptDistFromEnd = 0;
     var finalPointCalcAlt: number;
+    var des = new Map().set('LEGS', []);
 
     if (DEBUG_MODE) {
         console.log(`================================================================\n\n`
@@ -77,12 +77,12 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
         if (index === 0) {
             calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, point1DistFromEnd, point1.tops);
             if (DEBUG_MODE) {
-                console.log(`${leg.endPoint} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`)
+                console.log(`${leg.endPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`)
             };
             if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
                 return undefined;
             }
-            finalPointCalcAlt = calcAlt;
+            des.get('LEGS').unshift([leg.endPoint.name, Math.round(calcAlt), undefined]);
         }
         wptDistFromEnd += leg.length;
         calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, point1DistFromEnd, point1.tops);
@@ -90,13 +90,11 @@ export function RigidCheck(star:Star, cruise: number, finalAlt: number, point1: 
         if (!(Math.round(calcAlt) >= constraints[0] && Math.round(calcAlt) <= constraints[1])) { // * sorta sus rounding since i dont want to ignore rigid points
             return undefined;
         }
-        des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(requiredAngle.toFixed(3))));
+        des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(requiredAngle.toFixed(3))]);
+        des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     }
 
     if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
 
-    var des = new Map(Array.from(des).reverse());
-    des.set(revLegs[0].endPoint.name, finalPointCalcAlt);
-    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), requiredAngle).toFixed(1))), requiredAngle]);
     return des;
 }

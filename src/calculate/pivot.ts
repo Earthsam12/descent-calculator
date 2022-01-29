@@ -12,7 +12,6 @@ import { Vcalc } from "../vcalc";
  */
 export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
-    var des = new Map();
 
     var angles: number[] = [];
     var a = 0;
@@ -73,8 +72,19 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             );
             }
 
+            if (index === 0) {
+                calcAlt = vcalc.pointSlopeAlt(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
+                if (!(Math.round(calcAlt) >= revLegs[0].endPoint.bottoms && Math.round(calcAlt) <= revLegs[0].endPoint.tops)) {
+                    isValidAngle = false;
+                    break;
+                }
+                if (DEBUG_MODE) {
+                    console.log(`${leg.endPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
+                }
+            }
+
             calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
-            if (DEBUG_MODE) {console.log(`Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`)};
+            if (DEBUG_MODE) {console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`)};
             if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
                 isValidAngle = false;
                 break;
@@ -103,18 +113,16 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
         }
 
     if (DEBUG_MODE) {console.log(`Closest angle to ideal angle:                   ${closestAngle}`)};
-
+    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
+    var des = new Map().set('LEGS', []);
     wptDistFromEnd = 0;
     for (const leg of revLegs) {
+        if (wptDistFromEnd === 0) {
+            des.get('LEGS').unshift([revLegs[0].endPoint.name, Math.round(vcalc.pointSlopeAlt(0, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)), undefined]);
+        }
         wptDistFromEnd += leg.length;
-        des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(vcalc.pointSlopeAlt(wptDistFromEnd, closestAngle, pivotPointDistFromEnd, pivotPoint.tops))).set('LEG FPA', closestAngle));
+        des.get('LEGS').unshift([leg.startPoint.name, Math.round(vcalc.pointSlopeAlt(wptDistFromEnd, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)), closestAngle])
     }
-
-    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
-
-    var des = new Map(Array.from(des).reverse());
-    des.set(revLegs[0].endPoint.name, Math.round(vcalc.pointSlopeAlt(0, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)));
-    des.set('TOD', [parseFloat((vcalc.desDistance(cruise - des.get(star.legs[0].name).get(star.points[0].name), closestAngle).toFixed(1))), closestAngle]);
-    
+    des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     return des;
 }

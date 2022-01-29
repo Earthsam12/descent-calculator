@@ -49,23 +49,23 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 }
 
-const DEBUG_MODE = false; // TODO: determine based off flag
+const DEBUG_MODE = true; // TODO: determine based off flag
 
 // TEMP BELOW: FOR TESTING
 
-import { BAYST1 as STAR } from "./testing/test_star_data";
+import { NITZR3 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
 if (DEBUG_MODE) {console.log(des)};
 
-var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
-for (const i of Array.from(des)) {
-    if (Array.from(i)[0] === Array.from(des.entries())[des.size - 2][0]) {
+var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
+for (const i of des.get('LEGS')) {
+    if (!i[2]) {
         desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
         break;
     }
-    desTree += ` ╠════════════════Point: ${i[0].slice(0,5)}    Alt: ${Array.from(i[1])[0][1]}\n`;
+    desTree += ` ╠════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
     desTree += ' ║ \n'
-    desTree += `${i[1].get('LEG FPA').toFixed(1)}°\n`
+    desTree += `${i[2].toFixed(1)}°\n`
     desTree += ' ║ \n'
 }
 
