@@ -52,8 +52,9 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
     var validAngles = [];
     var solved = false;
     for (const angle of angles) {
-        if (DEBUG_MODE) {console.log("================================")};
-        if (DEBUG_MODE) {console.log(`testing angle ${angle.toFixed(1)}`)};
+        if (DEBUG_MODE) {console.log('\n================================================================\n\n'
+            + `Testing angle:                                  ${angle}`)};
+
         var wptDistFromEnd = 0;
         var isValidAngle = true;
 
@@ -62,17 +63,18 @@ export function Pivot(star:Star, cruise: number, finalAlt: number, pivotPoint: P
             const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
             wptDistFromEnd += leg.length;
 
-            if (index === 0) {
-                calcAlt = vcalc.pointSlopeAlt(0, angle, pivotPointDistFromEnd, pivotPoint.tops);
-                if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.endPoint.name}`)};
-                if (!(calcAlt >= leg.endPoint.bottoms && calcAlt <= leg.endPoint.tops)) {
-                    isValidAngle = false;
-                    break;
-                }
+            if (DEBUG_MODE) {
+            console.log(`Leg:                                            ${leg.name}\n`
+            + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
+            + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
+            + `Leg Length:                                     ${leg.length}\n`
+            + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
+            + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
+            );
             }
 
             calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
-            if (DEBUG_MODE) {console.log(`${calcAlt.toFixed(0)} @ ${leg.startPoint.name}`)};
+            if (DEBUG_MODE) {console.log(`Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`)};
             if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
                 isValidAngle = false;
                 break;
