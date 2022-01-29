@@ -59,37 +59,17 @@ It starts at the end of the STAR and works backwards. For each leg, it checks wh
 
  
  ## Dealing with the returned data:
- The data that is returned is pretty hard to work with and parse (as seen by my horrendous descent tree printing code in `index.ts`).
- 
- Here's what the `Map` object will usually look like:
- 
- ```ts
- Map(9) {
-  'RANJR_JARHD' => Map(2) { 'RANJR' => 25705, 'LEG FPA' => 2.1 },
-  'JARHD_PJAAE' => Map(2) { 'JARHD' => 23700, 'LEG FPA' => 2.1 },
-  'PJAAE_USAAY' => Map(2) { 'PJAAE' => 21694, 'LEG FPA' => 2.1 },
-  'USAAY_WEEDU' => Map(2) { 'USAAY' => 19021, 'LEG FPA' => 2.1 },
-  'WEEDU_SUPRT' => Map(2) { 'WEEDU' => 17461, 'LEG FPA' => 2.1 },
-  'SUPRT_OOURR' => Map(2) { 'SUPRT' => 15679, 'LEG FPA' => 2.1 },
-  'OOURR_TRUPS' => Map(2) { 'OOURR' => 12782, 'LEG FPA' => 2.1 },
-  'TRUPS' => 11000,
-  'TOD' => [ 59.7, 2.1 ]
-}
-```
+ All functions return a Map with exactly 2 entries:
+ * `'LEGS'`
+   * Array of Arrays for each leg in the STAR, defined by it's startpoint (except for the last one which, is defined by it's endpoint).
+     * `[<point name>, <calculated alt at point>, <Leg FPA to be flown after passing that point>]`
+ * `'TOD'`
+   * Array of 2 items containing the Top Of Descent Point's distance to the first point.
+     * `[<TOD distance to first point>, <FPA from TOD to first point>]`
 
-The `key` of each entry is the leg name (`<startPointName>_<endPointName>`).\
-The `value` of each entry is another `Map`, with 2 values each:
- * The leg's start point's name => Calculated altitude for that point
- * 'LEG FPA' => The flight path angle that the leg should be flown at
-
-There are 2 extra values at the end that do not comply to these standards:
-
- * Final point's name => Final point's calculated altitude
- * 'TOD' => Array containing the Top Of Descent's distance from the first point, and the flight path angle from TOD to the first point
 
 ## Future Work:
  * GUI Functionality
  * MultiFPA 'foresight' (ability to evaluate constraints at points beyond the next one)
  * Nav Database with ability to select and insert STAR data.
- * Not terrible data return.
  
