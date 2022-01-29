@@ -37,29 +37,22 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
     var legFPAs = new Map();
 
     // TODO: foresight (look further down path for rigid constriants)
-    /**
-     * constatly check if required angle from alt => first target alt works
-     * ^ unless there are rigid points ahead, in which case
-     * check if required angle from alt => rigid point works
-     * if so, skip to that point
-     * if not, cont' as normal
-     * then after skipping to that point, check if another rigid point ahead and do same to that point if so
-     * else try to see if angle from ppos to last point @ first target altitude works
-     * if it does then cool star over
-     * else cont' as normal
-     * this should reduce the # of different fpas
-     */
-    /**
-     * if (required angle => first target alt meets cstrs) {
-     *  use that, calc alts and return
-     * }
-     * if (rigid points ahead) {
-     *   if (required angle to next rigid point meets all in between constraints) {
-     *      skip to that point; continue (so that we check if we can skip to the end again)
-     *   }
-     *   else {cont as normal}
-     * }
-     */
+   /**
+    * REWRITE PLANS:
+    * for each leg:
+    *   if current angle => first point works:
+    *       calc alts and return
+    *   else if required angle to first target alt meets all constraints:
+    *       calc alts and return
+    *   else if rigid points ahead:
+    *       calc angle to rigid point
+    *       if angle meets all in between constraints:
+    *           calc alts for in between constraints and skip to point
+    *   else if next constraint is a window constraint && current angle meets constraints:
+    *       calc alt and cont'
+    *   else:
+    *       angle iter.
+    */
 
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
