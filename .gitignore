@@ -108,3 +108,6 @@ build/
 
 # VS Code
 .vscode
+
+# Lines of code out file
+/out
