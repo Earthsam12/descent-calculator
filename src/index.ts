@@ -4,7 +4,6 @@ import { multiFPA } from "./calculate/multiFPA";
 import { Pivot } from "./calculate/pivot";
 import { RigidCheck } from "./calculate/rigidCheck";
 
-
 /**
  * @param star Star object
  * @param cruise cruise altitude in feet
@@ -50,12 +49,13 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 }
 
+const DEBUG_MODE = false; // TODO: determine based off flag
 
-// TEMP: FOR TESTING
+// TEMP BELOW: FOR TESTING
 
 import { BAYST1 as STAR } from "./testing/test_star_data";
-const des = calcDes(STAR, 39000, 9000, true); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
-console.log(des); // TEMP: testing
+const des = calcDes(STAR, 39000, 9000, DEBUG_MODE); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
+if (DEBUG_MODE) {console.log(des)};
 
 var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${Array.from(Array.from(des)[0][1])[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of Array.from(des)) {
