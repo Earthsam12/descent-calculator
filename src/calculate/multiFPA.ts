@@ -116,14 +116,14 @@ export function multiFPA(star:Star, cruise: number, finalAlt: number, DEBUG_MODE
         if (DEBUG_MODE) {
             console.log(``
             + `Leg FPA:                                        ${parseFloat(currentAngle.toFixed(3))}\n`
-            + `Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
+            + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
         }
 
         legFPAs.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
         alt = Math.round(calcAlt);
     }
 
-    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')}
+    if (DEBUG_MODE) {console.log('\n=========================== FINISHED ===========================\n')};
 
     var des = new Map(Array.from(legFPAs).reverse());
     des.set(star.legs[star.legs.length-1].endPoint.name, finalAlt);
