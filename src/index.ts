@@ -49,12 +49,15 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 }
 
-const DEBUG_MODE = true; // TODO: determine based off flag
+var DEBUG_MODE = false;
+if (process.argv.slice(2).toString().indexOf('debug') !== -1) {
+    DEBUG_MODE = true;
+}
 
 // TEMP BELOW: FOR TESTING
 
 import { BAYST1 as STAR } from "./testing/test_star_data";
-const des = calcDes(STAR, 39000, 9000, DEBUG_MODE); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
+const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
 if (DEBUG_MODE) {console.log(des)};
 
 var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
