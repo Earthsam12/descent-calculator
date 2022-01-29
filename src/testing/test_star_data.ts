@@ -17,7 +17,7 @@ export const TRUPS4 = new Star(
     [9, 9, 12, 7, 8, 13, 8]
 )
 
-// For pivot Alg
+// For rigidCheck Alg
 export const NITZR3 = new Star(
     'NITZR3',
     ['KBEEE', 'DEMLL', 'NITZR', 'WRSAW', 'DAHRL', 'GDNEE', 'ELLKO', 'SAVVG', 'GREAK'],
@@ -49,7 +49,7 @@ export const FAKEE1 = new Star(
     [5, 6, 5, 6]
 )
 
-// For Mutli FPA foresight (must force to use multifpa, else will use pivot)
+// For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
 export const BAYST1 = new Star(
     'BAYST1',
     ['SERCO', 'HUULL', 'GNZZO', 'RYDRR', 'KEVVI', 'BAYST'],
