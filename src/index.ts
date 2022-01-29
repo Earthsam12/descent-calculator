@@ -53,7 +53,7 @@ const DEBUG_MODE = true; // TODO: determine based off flag
 
 // TEMP BELOW: FOR TESTING
 
-import { NITZR3 as STAR } from "./testing/test_star_data";
+import { BAYST1 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE); // TODO: make --debug an option when doing npm run run, but always on when running npm run dev
 if (DEBUG_MODE) {console.log(des)};
 
