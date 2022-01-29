@@ -52,16 +52,21 @@ export const FAKEE1 = new Star(
 // For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
 export const BAYST1 = new Star(
     'BAYST1',
-    ['SERCO', 'HUULL', 'GNZZO', 'RYDRR', 'KEVVI', 'BAYST'],
+    ['SERCO', 'HUULL', 'GNZZO', 'RYDRR', 'KEVVI', 'BAYST', 'JUSSE', 'CLIFY', 'DWYER', 'AYYYY', 'PETYR'],
     [
         [21000, 19000],
         [20000, 17000],
         [14000, 13000],
         [11000, 11000],
         [100000, 10000],
-        [100000, 9000]
+        [100000, 9000],
+        [9000, 8000],
+        [8000, 7000],
+        [7000, 7000],
+        [6000, 6000],
+        [5000, 5000]
     ],
-    [13, 35, 15, 17, 5]
+    [13, 35, 15, 17, 5, 6, 5, 9, 6, 6]
 )
 
 // TODO: BAYST1 with the cont' page (excluded for testing foresight)
