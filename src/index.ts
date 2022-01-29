@@ -31,13 +31,13 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
     var result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
-        if (DEBUG_MODE) {console.log('\n --------- Running Rigid Check --------- \n')}
+        if (DEBUG_MODE) {console.log('\n --------- Running Rigid Check ---------')}
         result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);  
     } else if (rigidPoints.length === 1) {
-        if (DEBUG_MODE) {console.log('\n --------- Running Pivot --------- \n')}
+        if (DEBUG_MODE) {console.log('\n --------- Running Pivot ---------')}
         result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
     } else {
-        if (DEBUG_MODE) {console.log('\n --------- Running MultiFPA --------- \n')}
+        if (DEBUG_MODE) {console.log('\n --------- Running MultiFPA ---------')}
         return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
