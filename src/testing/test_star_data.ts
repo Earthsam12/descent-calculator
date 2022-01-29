@@ -68,5 +68,3 @@ export const BAYST1 = new Star(
     ],
     [13, 35, 15, 17, 5, 6, 5, 9, 6, 6]
 )
-
-// TODO: BAYST1 with the cont' page (excluded for testing foresight)
