@@ -63,10 +63,10 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
-        console.log(`\nLeg:                                            ${leg.name}\n`
-            + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
-            + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
-            + `Leg Length:                                     ${leg.length}\n`
+        console.log(`\nLeg:`.padEnd(48, ' ') + `${leg.name}\n`
+            + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
+            + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
+            + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
             + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
             + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
         );

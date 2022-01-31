@@ -51,7 +51,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     var validAngles = [];
     var solved = false;
     for (const angle of angles) {
-        if (DEBUG_MODE) { console.log(`Testing angle:                                  ${angle}`) };
+        if (DEBUG_MODE) { console.log(`Testing angle:`.padEnd(48, ' ') + `${angle}`) };
 
         var wptDistFromEnd = 0;
         var isValidAngle = true;
@@ -62,10 +62,10 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
             wptDistFromEnd += leg.length;
 
             if (DEBUG_MODE) {
-                console.log(`Leg:                                            ${leg.name}\n`
-                    + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
-                    + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
-                    + `Leg Length:                                     ${leg.length}\n`
+                console.log(`Leg:`.padEnd(48, ' ') + `${leg.name}\n`
+                    + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
+                    + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
+                    + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
                     + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
                     + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
                 );
@@ -111,7 +111,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
         }
     }
 
-    if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:                   ${closestAngle}`) };
+    if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:`.padEnd(48, ' ') + `${closestAngle}`) };
     var des = new Map().set('LEGS', []);
     wptDistFromEnd = 0;
     for (const leg of revLegs) {

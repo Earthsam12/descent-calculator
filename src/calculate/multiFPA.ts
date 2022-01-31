@@ -55,50 +55,69 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
      */
 
     // TODO: replace var usages with let
-    // TODO: replace hard-coded spacing in debug printing with .padEnd()
 
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
         if (DEBUG_MODE) {
-            console.log(`\nLeg:                                            ${leg.name}\n`
-                + `Leg Starting Waypoint:                          ${leg.startPoint.name}\n`
-                + `Leg Terminal Waypoint:                          ${leg.endPoint.name}\n`
-                + `Leg Length:                                     ${leg.length}\n`
+            console.log(`\nLeg:`.padEnd(48, ' ') + `'${leg.name}\n`
+                + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
+                + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
+                + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
                 + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
                 + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
             );
         }
 
         { // check if can go to first point
+            let canSkipToEnd = true;
             let distToFirstPoint = 0;
             for (let i = index; i < revLegs.length; i++) {
                 const l = revLegs[i];
                 distToFirstPoint += l.length;
             }
-            console.log(distToFirstPoint);
+            console.log(distToFirstPoint); // TEMP
             const FPA = vcalc.desAngle(distToFirstPoint, firstTargetAltitude - alt);
-            for (let i = index; i < revLegs.length; i++) {
+            for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
-                // TODO: calc alts at each wpt between current leg and first alt, check in constraints
+                const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
+                if (!(calcAlt > l.startPoint.bottoms && calcAlt < l.startPoint.tops)) {
+                    canSkipToEnd = false;
+                    break;
+                }
+                tempAlt = calcAlt;
+            }
+            if (canSkipToEnd) {
+                console.log("CAN SKIP TO END") // TEMP
+                // TODO: data
+                return des;
             }
         }
 
-        if (constraints[0] == constraints[1]) {
-            if (DEBUG_MODE) { console.log('Calculating to next point with:                 Required Angle') };
+        { // Check if can skip to rigid point
+            // Find if rigidPoints ahead
+            let nextRigidPoint: Point | undefined = undefined;
+            for (let i = index; i < revLegs.length; i++) {
+                const l = revLegs[i];
+
+            }
+        }
+
+        if (constraints[0] === constraints[1]) {
+            if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Required Angle') };
             const fpa = vcalc.desAngle(leg.length, constraints[0] - alt);
             calcAlt = vcalc.altChange(leg.length, fpa) + alt;
             currentAngle = fpa;
         }
 
         else if (vcalc.altChange(leg.length, currentAngle) + alt >= constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt <= constraints[1]) {
-            if (DEBUG_MODE) { console.log('Calculating to next point with:                 Current Angle') };
+            if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Current Angle') };
             calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
 
         else {
-            if (DEBUG_MODE) { console.log('Calculating to next point with:                 Angle Iteration') };
+            if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Angle Iteration') };
             var solved: boolean = false;
             var validAngles: number[] = [];
 
@@ -124,7 +143,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 }
             }
 
-            if (DEBUG_MODE) { console.log(`Closest angle to current angle:                 ${closestAngle}`) };
+            if (DEBUG_MODE) { console.log(`Closest angle to current angle:`.padEnd(48, ' ') + `${closestAngle}`) };
             currentAngle = closestAngle;
             calcAlt = vcalc.altChange(leg.length, closestAngle) + alt;
         }
