@@ -58,10 +58,7 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
     var finalPointCalcAlt: number;
     var des = new Map().set('LEGS', []);
 
-    if (DEBUG_MODE) {
-        console.log(`================================================================\n\n`
-            + `Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`)
-    }
+    if (DEBUG_MODE) { console.log(`Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`) }
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
@@ -93,8 +90,6 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(requiredAngle.toFixed(3))]);
         des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     }
-
-    if (DEBUG_MODE) { console.log('\n=========================== FINISHED ===========================\n') };
 
     return des;
 }

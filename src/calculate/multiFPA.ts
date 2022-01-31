@@ -54,7 +54,9 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
      *       angle iter.
      */
 
-    if (DEBUG_MODE) { console.log(`\n================================================================\n`) }
+    // TODO: replace var usages with let
+    // TODO: replace hard-coded spacing in debug printing with .padEnd()
+
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
@@ -67,6 +69,20 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
                 + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
             );
+        }
+
+        { // check if can go to first point
+            let distToFirstPoint = 0;
+            for (let i = index; i < revLegs.length; i++) {
+                const l = revLegs[i];
+                distToFirstPoint += l.length;
+            }
+            console.log(distToFirstPoint);
+            const FPA = vcalc.desAngle(distToFirstPoint, firstTargetAltitude - alt);
+            for (let i = index; i < revLegs.length; i++) {
+                const l = revLegs[i];
+                
+            }
         }
 
         if (constraints[0] == constraints[1]) {
@@ -130,8 +146,6 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(currentAngle.toFixed(3))]);
         alt = Math.round(calcAlt);
     }
-
-    if (DEBUG_MODE) { console.log('\n=========================== FINISHED ===========================\n') };
 
     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]])
     // ? Should we use a different FPA for the TOD => first point? sorta like idlepath?

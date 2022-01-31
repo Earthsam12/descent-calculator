@@ -51,10 +51,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     var validAngles = [];
     var solved = false;
     for (const angle of angles) {
-        if (DEBUG_MODE) {
-            console.log('================================================================\n\n'
-                + `Testing angle:                                  ${angle}`)
-        };
+        if (DEBUG_MODE) { console.log(`Testing angle:                                  ${angle}`) };
 
         var wptDistFromEnd = 0;
         var isValidAngle = true;
@@ -115,7 +112,6 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     }
 
     if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:                   ${closestAngle}`) };
-    if (DEBUG_MODE) { console.log('\n=========================== FINISHED ===========================\n') };
     var des = new Map().set('LEGS', []);
     wptDistFromEnd = 0;
     for (const leg of revLegs) {
