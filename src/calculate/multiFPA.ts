@@ -81,7 +81,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             const FPA = vcalc.desAngle(distToFirstPoint, firstTargetAltitude - alt);
             for (let i = index; i < revLegs.length; i++) {
                 const l = revLegs[i];
-                
+                // TODO: calc alts at each wpt between current leg and first alt, check in constraints
             }
         }
 
