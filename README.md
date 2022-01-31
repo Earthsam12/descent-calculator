@@ -1,5 +1,5 @@
 # Descent Calculator
-### Simple calculator that can give FPA(s) and TOD accounting for constraints
+### Simple calculator that can give a descent path and TOD accounting for constraints
 
 ## Usage:
 
