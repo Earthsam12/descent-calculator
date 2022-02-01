@@ -8,6 +8,6 @@
     "experimentalDecorators": false,
   },
   "exclude": [
-    "src/devData",
+    "src/testing",
   ],
 }
