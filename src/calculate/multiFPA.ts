@@ -37,25 +37,11 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
     var calcAlt: number;
     var des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
 
-    // TODO: foresight (look further down path for rigid constriants)
-    /**
-     * REWRITE PLANS:
-     * for each leg:
-     *   if current angle => first point works:
-     *       calc alts and return
-     *   else if required angle to first target alt meets all constraints:
-     *       calc alts and return
-     *   else if rigid points ahead:
-     *       calc angle to rigid point
-     *       if angle meets all in between constraints:
-     *           calc alts for in between constraints and skip to point
-     *   else if next constraint is a window constraint && current angle meets constraints:
-     *       calc alt and cont'
-     *   else:
-     *       angle iter.
-     */
-
+    // TODO: check for rigid points ahead
+    // TODO: recalculate idealAngle during the loop
+    // This would mean the angleiter picks a more relevant angle to the current point
     // TODO: replace var usages with let
+    // TODO: make distToEnd defined before loop and updated after index0 check
 
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
@@ -78,6 +64,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
         }
 
+        // TODO: check if this actually gives less FPAs than normal
         { // check if can go to first point
             let canSkipToEnd = true;
             let distToEnd = 0;
