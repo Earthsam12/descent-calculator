@@ -56,7 +56,7 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1) {
 
 // TEMP BELOW: FOR TESTING
 
-import { TRUPS4 as STAR } from "./testing/test_star_data";
+import { FAKEE1 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 

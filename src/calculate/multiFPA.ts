@@ -85,7 +85,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 const l = revLegs[i];
                 distToEnd += l.length;
             }
-            console.log(`Dist to end:`.padEnd(48, ' ') + `${distToEnd}`); // TEMP
+            if (DEBUG_MODE) { console.log(`Dist to end:`.padEnd(48, ' ') + `${distToEnd}`) };
             const FPA = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
@@ -97,7 +97,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 tempAlt = calcAlt;
             }
             if (canSkipToEnd) {
-                console.log('Can skip to end:'.padEnd(48, ' ') + 'true') // TEMP
+                if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'true')};
                 for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                     const l = revLegs[i];
                     const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
@@ -107,7 +107,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 }
                 return des;
             } else {
-                console.log('Can skip to end:'.padEnd(48, ' ') + 'false'); // TEMP
+                if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'false')};
             }
         }
 
