@@ -1,4 +1,5 @@
 import { Star } from "../lib/Star";
+import { Point } from "../lib/Point";
 import { Vcalc } from "../vcalc";
 
 /**
@@ -61,7 +62,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
         if (DEBUG_MODE) {
-            console.log(`\nLeg:`.padEnd(48, ' ') + `'${leg.name}\n`
+            console.log(`\nLeg:`.padEnd(49, ' ') + `${leg.name}\n`
                 + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
                 + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
                 + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
@@ -70,37 +71,43 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             );
         }
 
+        if (index === 0) {
+            if (DEBUG_MODE) {
+                console.log(`${leg.endPoint.name} Calculated Altitude:`.padEnd(48, ' ') + finalAlt);
+            }
+            des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
+        }
+
         { // check if can go to first point
             let canSkipToEnd = true;
-            let distToFirstPoint = 0;
+            let distToEnd = 0;
             for (let i = index; i < revLegs.length; i++) {
                 const l = revLegs[i];
-                distToFirstPoint += l.length;
+                distToEnd += l.length;
             }
-            console.log(distToFirstPoint); // TEMP
-            const FPA = vcalc.desAngle(distToFirstPoint, firstTargetAltitude - alt);
+            console.log(`Dist to end:`.padEnd(48, ' ') + `${distToEnd}`); // TEMP
+            const FPA = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
                 const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
-                if (!(calcAlt > l.startPoint.bottoms && calcAlt < l.startPoint.tops)) {
+                if (!(calcAlt >= l.startPoint.bottoms && calcAlt <= l.startPoint.tops)) {
                     canSkipToEnd = false;
                     break;
                 }
                 tempAlt = calcAlt;
             }
             if (canSkipToEnd) {
-                console.log("CAN SKIP TO END") // TEMP
-                // TODO: data
+                console.log('Can skip to end:'.padEnd(48, ' ') + 'true') // TEMP
+                for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
+                    const l = revLegs[i];
+                    const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
+                    tempAlt = calcAlt;
+                    des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(FPA.toFixed(3))]);
+                    des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
+                }
                 return des;
-            }
-        }
-
-        { // Check if can skip to rigid point
-            // Find if rigidPoints ahead
-            let nextRigidPoint: Point | undefined = undefined;
-            for (let i = index; i < revLegs.length; i++) {
-                const l = revLegs[i];
-
+            } else {
+                console.log('Can skip to end:'.padEnd(48, ' ') + 'false'); // TEMP
             }
         }
 

@@ -15,7 +15,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     const vcalc = new Vcalc();
 
     if (finalAlt > star.legs[star.legs.length - 1].endPoint.tops || finalAlt < star.legs[star.legs.length - 1].endPoint.bottoms) {
-        if (DEBUG_MODE) { console.log('\n --------- Overwriting finalAlt because of constraints --------- ') };
+        if (DEBUG_MODE) { console.log('\nOverwriting finalAlt because of constraints') };
         finalAlt = (star.legs[star.legs.length - 1].endPoint.tops + star.legs[star.legs.length - 1].endPoint.bottoms) / 2;
     }
 
@@ -56,7 +56,7 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1) {
 
 // TEMP BELOW: FOR TESTING
 
-import { BAYST1 as STAR } from "./testing/test_star_data";
+import { TRUPS4 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 
