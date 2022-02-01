@@ -35,6 +35,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
     var currentAngle = idealAngle;
     const revLegs = star.legs.slice().reverse();
     var calcAlt: number;
+    let distToEnd = star.length;
     var des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
 
     // TODO: check for rigid points ahead
@@ -53,7 +54,8 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
                 + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
                 + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
-                + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
+                + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}\n`
+                + `Distance to end:`.padEnd(48, ' ') + `${distToEnd}`
             );
         }
 
@@ -63,16 +65,10 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             }
             des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
         }
-
+        
         // TODO: check if this actually gives less FPAs than normal
         { // check if can go to first point
             let canSkipToEnd = true;
-            let distToEnd = 0;
-            for (let i = index; i < revLegs.length; i++) {
-                const l = revLegs[i];
-                distToEnd += l.length;
-            }
-            if (DEBUG_MODE) { console.log(`Dist to end:`.padEnd(48, ' ') + `${distToEnd}`) };
             const FPA = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
@@ -142,20 +138,13 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             calcAlt = vcalc.altChange(leg.length, closestAngle) + alt;
         }
 
-        if (index === 0) {
-            if (DEBUG_MODE) {
-                console.log(`${leg.endPoint.name} Calculated Altitude:`.padEnd(48, ' ') + finalAlt);
-            }
-            des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
-        }
-
         if (DEBUG_MODE) {
             console.log(``
                 + `Leg FPA:                                        ${parseFloat(currentAngle.toFixed(3))}\n`
                 + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
         }
 
-        // des.set(leg.name, new Map().set(leg.startPoint.name, Math.round(calcAlt)).set('LEG FPA', parseFloat(currentAngle.toFixed(3))));
+        distToEnd -= leg.length;
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(currentAngle.toFixed(3))]);
         alt = Math.round(calcAlt);
     }
