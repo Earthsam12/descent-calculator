@@ -29,8 +29,8 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
     } else {
         firstTargetAltitude = (star.legs[0].startPoint.tops + star.legs[0].startPoint.bottoms) / 2;
     }
-
-    const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
+    
+    let idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
     var alt = finalAlt;
     var currentAngle = idealAngle;
     const revLegs = star.legs.slice().reverse();
@@ -39,8 +39,6 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
     var des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
 
     // TODO: check for rigid points ahead
-    // TODO: recalculate idealAngle during the loop
-    // This would mean the angleiter picks a more relevant angle to the current point
     // TODO: replace var usages with let
     // TODO: make distToEnd defined before loop and updated after index0 check
 
@@ -66,13 +64,16 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
         }
         
+        // recalculate idealAngle
+        idealAngle = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
+
         // TODO: check if this actually gives less FPAs than normal
         { // check if can go to first point
             let canSkipToEnd = true;
-            const FPA = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
+            
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
-                const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
+                const calcAlt = vcalc.altChange(l.length, idealAngle) + tempAlt;
                 if (!(calcAlt >= l.startPoint.bottoms && calcAlt <= l.startPoint.tops)) {
                     canSkipToEnd = false;
                     break;
@@ -83,9 +84,9 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                 if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'true')};
                 for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                     const l = revLegs[i];
-                    const calcAlt = vcalc.altChange(l.length, FPA) + tempAlt;
+                    const calcAlt = vcalc.altChange(l.length, idealAngle) + tempAlt;
                     tempAlt = calcAlt;
-                    des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(FPA.toFixed(3))]);
+                    des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(idealAngle.toFixed(3))]);
                     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
                 }
                 return des;
