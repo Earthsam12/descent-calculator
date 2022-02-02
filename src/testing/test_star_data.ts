@@ -3,7 +3,16 @@ import { Star } from "../lib/Star";
 // For MultiFPA alg
 export const TRUPS4 = new Star(
     'TRUPS4',
-    ['RANJR', 'JARHD', 'PJAAE', 'USAAY', 'WEEDU', 'SUPRT', 'OOURR', 'TRUPS'],
+    [
+        'RANJR', 
+        'JARHD', 
+        'PJAAE', 
+        'USAAY', 
+        'WEEDU', 
+        'SUPRT', 
+        'OOURR', 
+        'TRUPS'
+    ],
     [
         [28000, 24000],
         [26000, 22000],
@@ -20,7 +29,17 @@ export const TRUPS4 = new Star(
 // For rigidCheck Alg
 export const NITZR3 = new Star(
     'NITZR3',
-    ['KBEEE', 'DEMLL', 'NITZR', 'WRSAW', 'DAHRL', 'GDNEE', 'ELLKO', 'SAVVG', 'GREAK'],
+    [
+        'KBEEE',
+        'DEMLL',
+        'NITZR',
+        'WRSAW',
+        'DAHRL',
+        'GDNEE',
+        'ELLKO',
+        'SAVVG',
+        'GREAK'
+    ],
     [
         [100000, 24000],
         [100000, 16000],
@@ -38,7 +57,13 @@ export const NITZR3 = new Star(
 // For pivot Alg (this isn't real i made it up)
 export const FAKEE1 = new Star(
     'FAKEE1',
-    ['AAAAA', 'BBBBB', 'CCCCC', 'DDDDD', 'EEEEE'],
+    [
+        'AAAAA',
+        'BBBBB',
+        'CCCCC',
+        'DDDDD',
+        'EEEEE'
+    ],
     [
         [100000, 15000],
         [100000, 13000],
@@ -52,7 +77,19 @@ export const FAKEE1 = new Star(
 // For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
 export const BAYST1 = new Star(
     'BAYST1',
-    ['SERCO', 'HUULL', 'GNZZO', 'RYDRR', 'KEVVI', 'BAYST', 'JUSSE', 'CLIFY', 'DWYER', 'AYYYY', 'PETYR'],
+    [
+        'SERCO', 
+        'HUULL', 
+        'GNZZO', 
+        'RYDRR', 
+        'KEVVI', 
+        'BAYST', 
+        'JUSSE', 
+        'CLIFY', 
+        'DWYER', 
+        'AYYYY', 
+        'PETYR'
+    ],
     [
         [21000, 19000],
         [20000, 17000],
@@ -67,4 +104,40 @@ export const BAYST1 = new Star(
         [5000, 5000]
     ],
     [13, 35, 15, 17, 5, 6, 5, 9, 6, 6]
+)
+
+export const BERGL_BAYST1 = new Star(
+    'BERGL.BAYST1',
+    [
+        'CROWY',
+        'MUPTT',
+        'MDOTS',
+        'GRIPR',
+        'BIKNG',
+        'RUNNN',
+        'IRNMN',
+        'SYMON',
+        'BAYST'
+    ],
+    [
+        [29000, 26000],
+        [27000, 23000],
+        [24000, 20000],
+        [23000, 19000],
+        [20000, 16000],
+        [17000, 14000],
+        [16000, 12000],
+        [13000, 12000],
+        [100000, 9000]
+    ],
+    [
+        12,
+        7,
+        6,
+        9,
+        7,
+        7,
+        7,
+        11
+    ]
 )
