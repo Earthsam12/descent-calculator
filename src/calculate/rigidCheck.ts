@@ -16,7 +16,7 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
     const vcalc = new Vcalc();
     const revLegs = star.legs.slice().reverse();
 
-    var firstTargetAltitude: number;
+    let firstTargetAltitude: number;
     if (star.legs[0].startPoint.tops === 100000) {
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
     } else if (star.legs[0].startPoint.bottoms === 0) {
@@ -29,7 +29,7 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
 
     const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
 
-    var point1DistFromEnd = 0;
+    let point1DistFromEnd = 0;
     for (const leg of revLegs) {
         if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point1) {
             break;
@@ -40,7 +40,7 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
         }
     }
 
-    var point2DistFromEnd = 0;
+    let point2DistFromEnd = 0;
     for (const leg of revLegs) {
         if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point2) { // Theoretically not possible but just to be safe
             break;
@@ -53,10 +53,10 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
 
     const requiredAngle = vcalc.desAngle(Math.abs(point2DistFromEnd - point1DistFromEnd), Math.abs(point2.tops - point1.tops));
 
-    var calcAlt: number;
-    var wptDistFromEnd = 0;
-    var finalPointCalcAlt: number;
-    var des = new Map().set('LEGS', []);
+    let calcAlt: number;
+    let wptDistFromEnd = 0;
+    let finalPointCalcAlt: number;
+    let des = new Map().set('LEGS', []);
 
     if (DEBUG_MODE) { console.log(`Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`) }
     for (let index = 0; index < revLegs.length; index++) {

@@ -19,7 +19,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
         finalAlt = (star.legs[star.legs.length - 1].endPoint.tops + star.legs[star.legs.length - 1].endPoint.bottoms) / 2;
     }
 
-    var rigidPoints = [];
+    let rigidPoints = [];
     for (let i = 0; i < star.legs.slice().reverse().length; i++) {
         const leg = star.legs.slice().reverse()[i];
         if (leg.endPoint === star.points[star.points.length - 1] && leg.endPoint.tops === leg.endPoint.bottoms) {
@@ -29,7 +29,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
             rigidPoints.push(leg.startPoint);
         }
     }
-    var result: Map<any, any> | undefined;
+    let result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
         if (DEBUG_MODE) { console.log('\nRunning Rigid Check') }
         result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);
@@ -49,7 +49,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 }
 
-var DEBUG_MODE = false;
+let DEBUG_MODE = false;
 if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.slice(2).toString().indexOf('no-debug') === -1) {
     DEBUG_MODE = true;
 }
@@ -60,7 +60,7 @@ import { BAYST1_shortened_modified as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 
-var desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
+let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of des.get('LEGS')) {
     if (!i[2]) {
         desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;

@@ -13,14 +13,14 @@ import { Vcalc } from "../vcalc";
 export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
 
-    var angles: number[] = [];
-    var a = 0;
+    let angles: number[] = [];
+    let a = 0;
     while (a < 7) {
         a = parseFloat((a + 0.1).toFixed(1));
         angles.push(a);
     }
 
-    var firstTargetAltitude: number;
+    let firstTargetAltitude: number;
     if (star.legs[0].startPoint.tops === 100000) {
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
     } else if (star.legs[0].startPoint.bottoms === 0) {
@@ -33,9 +33,9 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
 
     const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
     const revLegs = star.legs.slice().reverse();
-    var calcAlt: number;
+    let calcAlt: number;
 
-    var pivotPointDistFromEnd = 0;
+    let pivotPointDistFromEnd = 0;
     for (let i = 0; i < revLegs.length; i++) {
         const leg = revLegs[i];
         if (i === 0) {
@@ -48,13 +48,13 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
             break;
         }
     }
-    var validAngles = [];
-    var solved = false;
+    let validAngles = [];
+    let solved = false;
+    let wptDistFromEnd = 0;
     for (const angle of angles) {
         if (DEBUG_MODE) { console.log(`Testing angle:`.padEnd(48, ' ') + `${angle}`) };
 
-        var wptDistFromEnd = 0;
-        var isValidAngle = true;
+        let isValidAngle = true;
 
         for (let index = 0; index < revLegs.length; index++) {
             const leg = revLegs[index];
@@ -102,7 +102,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
         return undefined;
     }
 
-    var closestAngle = undefined;
+    let closestAngle = undefined;
     for (const i of validAngles) {
         if (!closestAngle) {
             closestAngle = i;
@@ -112,7 +112,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     }
 
     if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:`.padEnd(48, ' ') + `${closestAngle}`) };
-    var des = new Map().set('LEGS', []);
+    let des = new Map().set('LEGS', []);
     wptDistFromEnd = 0;
     for (const leg of revLegs) {
         if (wptDistFromEnd === 0) {

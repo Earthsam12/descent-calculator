@@ -12,14 +12,16 @@ import { Vcalc } from "../vcalc";
 export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoints: Point[], DEBUG_MODE: boolean) {
     const vcalc = new Vcalc();
 
-    var angles: number[] = [];
-    var a = 0;
-    while (a < 7) {
-        a = parseFloat((a + 0.1).toFixed(1));
-        angles.push(a);
+    let angles: number[] = [];
+    {
+        let a = 0;
+        while (a < 7) {
+            a = parseFloat((a + 0.1).toFixed(1));
+            angles.push(a);
+        }
     }
 
-    var firstTargetAltitude: number;
+    let firstTargetAltitude: number;
     if (star.legs[0].startPoint.tops === 100000) {
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
     } else if (star.legs[0].startPoint.bottoms === 0) {
@@ -31,16 +33,12 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
     }
     
     let idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
-    var alt = finalAlt;
-    var currentAngle = idealAngle;
+    let alt = finalAlt;
+    let currentAngle = idealAngle;
     const revLegs = star.legs.slice().reverse();
-    var calcAlt: number;
+    let calcAlt: number;
     let distToEnd = star.length;
-    var des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
-
-    // TODO: check for rigid points ahead
-    // TODO: replace var usages with let
-    // TODO: make distToEnd defined before loop and updated after index0 check
+    let des = new Map().set('LEGS', []); // [startpoint, alt, leg fpa]
 
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
@@ -155,8 +153,8 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
 
         else {
             if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Angle Iteration') };
-            var solved: boolean = false;
-            var validAngles: number[] = [];
+            let solved: boolean = false;
+            let validAngles: number[] = [];
 
             for (let index = 0; index < angles.length; index++) {
                 const angle = angles[index];
@@ -170,7 +168,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 }
             }
 
-            var closestAngle = undefined;
+            let closestAngle = undefined;
 
             for (const i of validAngles) {
                 if (!closestAngle) {
