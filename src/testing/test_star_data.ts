@@ -141,3 +141,25 @@ export const BERGL_BAYST1 = new Star(
         11
     ]
 )
+
+// For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
+export const BAYST1_shortened_modified = new Star(
+    'BAYST1',
+    [
+        'SERCO', 
+        'HUULL', 
+        'GNZZO', 
+        'RYDRR', 
+        'KEVVI', 
+        'BAYST'
+    ],
+    [
+        [21000, 19000],
+        [20000, 17000],
+        [14000, 13000],
+        [11000, 11000],
+        [100000, 9000],
+        [100000, 9000]
+    ],
+    [13, 35, 15, 17, 5]
+)

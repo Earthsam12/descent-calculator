@@ -21,7 +21,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 
     var rigidPoints = [];
     for (let i = 0; i < star.legs.slice().reverse().length; i++) {
-        const leg = star.legs[i];
+        const leg = star.legs.slice().reverse()[i];
         if (leg.endPoint === star.points[star.points.length - 1] && leg.endPoint.tops === leg.endPoint.bottoms) {
             rigidPoints.push(leg.endPoint);
         }
@@ -56,7 +56,7 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.sli
 
 // TEMP BELOW: FOR TESTING
 
-import { BAYST1 as STAR } from "./testing/test_star_data";
+import { BAYST1_shortened_modified as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 

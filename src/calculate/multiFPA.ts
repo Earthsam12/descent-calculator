@@ -1,5 +1,5 @@
-import { Star } from "../lib/Star";
 import { Point } from "../lib/Point";
+import { Star } from "../lib/Star";
 import { Vcalc } from "../vcalc";
 
 /**
@@ -9,7 +9,7 @@ import { Vcalc } from "../vcalc";
  * @param DEBUG_MODE whether or not to print debug info
  * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
  */
-export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MODE: boolean) {
+export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoints: Point[], DEBUG_MODE: boolean) {
     const vcalc = new Vcalc();
 
     var angles: number[] = [];
@@ -63,14 +63,67 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
             }
             des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
         }
-        
-        // recalculate idealAngle
+
+        { // * check for rigidPoints ahead
+            let nextRigidPoint: Point;
+            for (const l of rigidPoints) {
+                if (star.points.slice().reverse().indexOf(l) > star.points.slice().reverse().indexOf(leg.endPoint)) {
+                    nextRigidPoint = l;
+                    break;
+                }
+            }
+
+            if (DEBUG_MODE) { try {console.log('Next Rigid Point:'.padEnd(48, ' ') + `${nextRigidPoint.name}`)} catch (error) {console.log('Next Rigid Point:'.padEnd(48, ' ') + 'None')}};
+            if (nextRigidPoint !== undefined) {
+                let distToNextRigidPoint = 0;
+                for (let i = index; i < revLegs.length; i++) {
+                    const l = revLegs[i];
+                    distToNextRigidPoint += l.length;
+                    if (l.startPoint === nextRigidPoint) {
+                        break;
+                    }
+                }
+
+                if (DEBUG_MODE) { console.log(`Distance to ${nextRigidPoint.name}:`.padEnd(48, ' ') + distToNextRigidPoint) }
+                const fpa = vcalc.desAngle(distToNextRigidPoint, nextRigidPoint.tops - alt);
+                let canSkip = true;
+                let i = index;
+                let calcAlt: number;
+                for (let tempAlt = alt; i < revLegs.length; i++) {
+                    const l = revLegs[i];
+                    calcAlt = vcalc.altChange(l.length, fpa) + tempAlt;
+                    tempAlt = calcAlt;
+                    if (!(Math.round(calcAlt) >= l.startPoint.bottoms && Math.round(calcAlt) <= l.startPoint.tops)) {
+                        canSkip = false;
+                        break;
+                    }
+                    if (l.startPoint === nextRigidPoint) {
+                        break;
+                    }
+                }
+                if (DEBUG_MODE) { console.log(`Can skip to ${nextRigidPoint.name}:`.padEnd(48, ' ') + canSkip) };
+                if (canSkip) {
+                    for (let j = index; j < revLegs.length; j++) {
+                        const l = revLegs[j];
+                        des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(fpa.toFixed(3))]);
+                        if (l.startPoint === nextRigidPoint) {
+                            break;
+                        }
+                    }
+                    currentAngle = fpa;
+                    index = i;
+                    alt = calcAlt;
+                    if (DEBUG_MODE) {console.log(`Leg FPA:`.padEnd(48, ' ') + `${parseFloat(currentAngle.toFixed(3))}`)}
+                    continue;
+                }
+            }
+        }
+
+        // * recalculate idealAngle
         idealAngle = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
 
-        // TODO: check if this actually gives less FPAs than normal
-        { // check if can go to first point
+        { // * check if can go to first point
             let canSkipToEnd = true;
-            
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
                 const calcAlt = vcalc.altChange(l.length, idealAngle) + tempAlt;
@@ -87,22 +140,15 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
                     const calcAlt = vcalc.altChange(l.length, idealAngle) + tempAlt;
                     tempAlt = calcAlt;
                     des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(idealAngle.toFixed(3))]);
-                    des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
                 }
+                des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
                 return des;
             } else {
                 if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'false')};
             }
         }
 
-        if (constraints[0] === constraints[1]) {
-            if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Required Angle') };
-            const fpa = vcalc.desAngle(leg.length, constraints[0] - alt);
-            calcAlt = vcalc.altChange(leg.length, fpa) + alt;
-            currentAngle = fpa;
-        }
-
-        else if (vcalc.altChange(leg.length, currentAngle) + alt >= constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt <= constraints[1]) {
+        if (vcalc.altChange(leg.length, currentAngle) + alt >= constraints[0] && vcalc.altChange(leg.length, currentAngle) + alt <= constraints[1]) {
             if (DEBUG_MODE) { console.log('Calculating to next point with:'.padEnd(48, ' ') + 'Current Angle') };
             calcAlt = vcalc.altChange(leg.length, currentAngle) + alt;
         }
@@ -141,7 +187,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, DEBUG_MOD
 
         if (DEBUG_MODE) {
             console.log(``
-                + `Leg FPA:                                        ${parseFloat(currentAngle.toFixed(3))}\n`
+                + `Leg FPA:`.padEnd(48, ' ') + `${parseFloat(currentAngle.toFixed(3))}\n`
                 + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
         }
 
