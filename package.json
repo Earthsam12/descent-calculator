@@ -4,7 +4,6 @@
   "description": "Simple calculator that can provide FPA(s) for a descent path given constraints",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd scripts && build.cmd",
     "clean-build": "cd scripts && cleanBuild.cmd",
     "run": "node build/index.js",
