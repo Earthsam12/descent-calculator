@@ -20,7 +20,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     }
 
     var rigidPoints = [];
-    for (let i = 0; i < star.legs.length; i++) {
+    for (let i = 0; i < star.legs.slice().reverse().length; i++) {
         const leg = star.legs[i];
         if (leg.endPoint === star.points[star.points.length - 1] && leg.endPoint.tops === leg.endPoint.bottoms) {
             rigidPoints.push(leg.endPoint);
@@ -38,19 +38,19 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
         result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
     } else {
         if (DEBUG_MODE) { console.log('\nRunning MultiFPA') }
-        return multiFPA(star, cruise, finalAlt, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
+        return multiFPA(star, cruise, finalAlt, rigidPoints, DEBUG_MODE); // Although called multiFPA, this function may return only 1 FPA.
     }
 
     if (!result) {
         if (DEBUG_MODE) { console.log('\nFailed, Running MultiFPA...') }
-        return multiFPA(star, cruise, finalAlt, DEBUG_MODE);
+        return multiFPA(star, cruise, finalAlt, rigidPoints, DEBUG_MODE);
     } else {
         return result;
     }
 }
 
 var DEBUG_MODE = false;
-if (process.argv.slice(2).toString().indexOf('debug') !== -1) {
+if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.slice(2).toString().indexOf('no-debug') === -1) {
     DEBUG_MODE = true;
 }
 
