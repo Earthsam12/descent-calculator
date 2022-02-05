@@ -62,7 +62,21 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.sli
     DEBUG_MODE = true;
 }
 
-import { ALWYS2 as STAR } from "./testing/test_star_data";
+let TXT_IN = false; // TEMP: txtin is temp until GUI is finished
+if (process.argv.slice(2).toString().indexOf('txt-in') !== -1) {
+    TXT_IN = true;
+}
+
+import { TRUPS4 as importStar } from "./testing/test_star_data";
+import { inputStar } from "./input/input";
+
+let STAR: Star;
+if (TXT_IN) {
+    STAR = inputStar;
+} else {
+    STAR = importStar;
+}
+
 if (DEBUG_MODE) { 
     const des = calcDes(STAR, 39000, 6000, DEBUG_MODE);
     console.log(des);

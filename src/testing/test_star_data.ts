@@ -172,10 +172,9 @@ export const FRDMM5 = new Star(
     [12, 15, 13, 11, 17, 12, 6, 7, 5, 5, 10, 8, 10, 8] // Leg lengths
 )
 
-
 // for xyz
 export const ALWYS2 = new Star(
-    'ALWYS', // Star name
+    'ALWYS2', // Star name
     [ // Names
         'DYAMD',
         'LAANE',
