@@ -1,13 +1,10 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "lib": ["ES2020"],
+    "lib": ["ESNext"],
     "outDir": "build",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "experimentalDecorators": false,
   },
-  "exclude": [
-    "src/testing",
-  ],
 }
