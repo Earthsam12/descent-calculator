@@ -67,7 +67,7 @@ if (process.argv.slice(2).toString().indexOf('txt-in') !== -1) {
     TXT_IN = true;
 }
 
-import { TRUPS4 as importStar } from "./testing/test_star_data";
+import { BAYST1 as importStar } from "./testing/test_star_data";
 import { inputStar } from "./input/input";
 
 let STAR: Star;

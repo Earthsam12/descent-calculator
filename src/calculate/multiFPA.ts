@@ -175,7 +175,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
             for (const i of validAngles) {
                 if (!closestAngle) {
                     closestAngle = i;
-                } else if (Math.abs(parseFloat((currentAngle - i).toFixed(1))) < Math.abs(parseFloat((currentAngle - closestAngle).toFixed(1)))) {
+                } else if (Math.abs(parseFloat((idealAngle - i).toFixed(1))) < Math.abs(parseFloat((idealAngle - closestAngle).toFixed(1)))) {
                     closestAngle = i;
                 }
             }
