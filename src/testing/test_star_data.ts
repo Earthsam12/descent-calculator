@@ -54,26 +54,6 @@ export const NITZR3 = new Star(
     [28, 13, 4, 8, 10, 6, 6, 8]
 )
 
-// For pivot Alg (this isn't real i made it up)
-export const FAKEE1 = new Star(
-    'FAKEE1',
-    [
-        'AAAAA',
-        'BBBBB',
-        'CCCCC',
-        'DDDDD',
-        'EEEEE'
-    ],
-    [
-        [100000, 15000],
-        [100000, 13000],
-        [12000, 12000],
-        [12000, 0],
-        [10000, 0]
-    ],
-    [5, 6, 5, 6]
-)
-
 // For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
 export const BAYST1 = new Star(
     'BAYST1',
@@ -104,42 +84,6 @@ export const BAYST1 = new Star(
         [5000, 5000]
     ],
     [13, 35, 15, 17, 5, 6, 5, 9, 6, 6]
-)
-
-export const BERGL_BAYST1 = new Star(
-    'BERGL.BAYST1',
-    [
-        'CROWY',
-        'MUPTT',
-        'MDOTS',
-        'GRIPR',
-        'BIKNG',
-        'RUNNN',
-        'IRNMN',
-        'SYMON',
-        'BAYST'
-    ],
-    [
-        [29000, 26000],
-        [27000, 23000],
-        [24000, 20000],
-        [23000, 19000],
-        [20000, 16000],
-        [17000, 14000],
-        [16000, 12000],
-        [13000, 12000],
-        [100000, 9000]
-    ],
-    [
-        12,
-        7,
-        6,
-        9,
-        7,
-        7,
-        7,
-        11
-    ]
 )
 
 // For Mutli FPA foresight (must force to use multifpa, else will use pivot (and fail))
@@ -229,7 +173,7 @@ export const FRDMM5 = new Star(
 )
 
 
-/* TE MPLATE
+/* .TEMPLATE
 // for xyz
 export const CLIPR2 = new Star(
     '', // Star name
