@@ -40,7 +40,7 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
     let result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
         if (DEBUG_MODE) { console.log('\nRunning Rigid Check') }
-        result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], true);
+        result = RigidCheck(star, cruise, finalAlt, rigidPoints[0], rigidPoints[1], DEBUG_MODE);
     } else if (rigidPoints.length === 1) {
         if (DEBUG_MODE) { console.log('\nRunning Pivot') }
         result = Pivot(star, cruise, finalAlt, rigidPoints[0], DEBUG_MODE);
@@ -62,23 +62,22 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.sli
     DEBUG_MODE = true;
 }
 
-// TEMP BELOW: for testing
-// TODO: if no final constraint: set final alt as constriant
+import { ALWYS2 as STAR } from "./testing/test_star_data";
+if (DEBUG_MODE) { 
+    const des = calcDes(STAR, 39000, 6000, DEBUG_MODE);
+    console.log(des);
 
-import { FRDMM5 as STAR } from "./testing/test_star_data";
-const des = calcDes(STAR, 39000, 5000, DEBUG_MODE);
-if (DEBUG_MODE) { console.log(des) };
-
-let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
-for (const i of des.get('LEGS')) {
-    if (!i[2]) {
-        desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
-        break;
+    let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
+    for (const i of des.get('LEGS')) {
+        if (!i[2]) {
+            desTree += ` ╚════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
+            break;
+        }
+        desTree += ` ╠════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
+        desTree += ' ║ \n'
+        desTree += `${i[2].toFixed(1)}°\n`
+        desTree += ' ║ \n'
     }
-    desTree += ` ╠════════════════Point: ${i[0]}    Alt: ${i[1]}\n`;
-    desTree += ' ║ \n'
-    desTree += `${i[2].toFixed(1)}°\n`
-    desTree += ' ║ \n'
-}
 
-console.log(desTree);
+    console.log(desTree);
+}

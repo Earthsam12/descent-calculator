@@ -6,7 +6,6 @@ import { Vcalc } from "../vcalc";
  * @param star Star object
  * @param cruise cruise altitude in feet
  * @param finalAlt desired altitude at final waypoint in feet
- * @param DEBUG_MODE whether or not to print debug info
  * @param point1 first point to clamp to
  * @param point2 second point to clamp to
  * @param DEBUG_MODE whether or not to print debug info (false by default)
@@ -55,21 +54,21 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
 
     let calcAlt: number;
     let wptDistFromEnd = 0;
-    let finalPointCalcAlt: number;
     let des = new Map().set('LEGS', []);
 
     if (DEBUG_MODE) { console.log(`Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`) }
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
-
-        console.log(`\nLeg:`.padEnd(48, ' ') + `${leg.name}\n`
-            + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
-            + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
-            + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
-            + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
-            + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
-        );
+        if (DEBUG_MODE) {
+            console.log(`\nLeg:`.padEnd(49, ' ') + `${leg.name}\n`
+                + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
+                + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
+                + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
+                + `${leg.startPoint.name} Top Constraint:`.padEnd(48, ' ') + `${leg.startPoint.tops}\n`
+                + `${leg.startPoint.name} Bottom Constraint:`.padEnd(48, ' ') + `${leg.startPoint.bottoms}`
+            );
+        }
 
         if (index === 0) {
             calcAlt = vcalc.pointSlopeAlt(0, requiredAngle, point1DistFromEnd, point1.tops);

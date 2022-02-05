@@ -173,6 +173,32 @@ export const FRDMM5 = new Star(
 )
 
 
+// for xyz
+export const ALWYS2 = new Star(
+    'ALWYS', // Star name
+    [ // Names
+        'DYAMD',
+        'LAANE',
+        'ALWYS',
+        'HEFLY',
+        'ARRTU',
+        'ADDMM',
+        'COGGR',
+        'BERKS'
+    ],
+    [ // Constraints [tops, bottoms]
+        [100000, 27000],
+        [26000, 22000],
+        [100000, 0],
+        [19000, 14000],
+        [10000, 10000],
+        [9000, 9000],
+        [9000, 7000],
+        [100000, 5000]
+    ],
+    [17, 10, 13, 14, 10, 13, 11] // Leg lengths
+)
+
 /* .TEMPLATE
 // for xyz
 export const CLIPR2 = new Star(
