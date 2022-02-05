@@ -163,3 +163,41 @@ export const BAYST1_shortened_modified = new Star(
     ],
     [13, 35, 15, 17, 5]
 )
+
+// for borat
+export const CLIPR2 = new Star(
+    'CLIPR2',
+    [
+        'TRISH',
+        'CLIPR',
+        'BAL',
+        'EYESS',
+        'EDDWD',
+        'MEGGS',
+        'NAYES'
+    ],
+    [
+        [12000, 12000],
+        [100000, 0],
+        [10000, 10000],
+        [100000, 0],
+        [100000, 0],
+        [100000, 0],
+        [100000, 0]
+    ],
+    [4, 20, 16, 6, 5, 8]
+);
+
+/* TEMPLATE
+// for xyz
+export const CLIPR2 = new Star(
+    '', // Star name
+    [ // Names
+        
+    ],
+    [ // Constraint
+
+    ],
+    [] // Leg lengths
+)
+*/

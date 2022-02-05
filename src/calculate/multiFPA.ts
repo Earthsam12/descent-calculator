@@ -45,7 +45,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
 
         if (DEBUG_MODE) {
-            console.log(`\nLeg:`.padEnd(49, ' ') + `${leg.name}\n`
+            console.log(`\nLeg:`.padEnd(49, ' ') + ` ${leg.name}\n`
                 + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
                 + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
                 + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`

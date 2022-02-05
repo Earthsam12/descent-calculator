@@ -55,9 +55,10 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.sli
 }
 
 // TEMP BELOW: FOR TESTING
+// TODO: IF NO FINAL CONSTRAINT: set final alt as constriant
 
-import { BAYST1_shortened_modified as STAR } from "./testing/test_star_data";
-const des = calcDes(STAR, 39000, 9000, DEBUG_MODE);
+import { CLIPR2 as STAR } from "./testing/test_star_data";
+const des = calcDes(STAR, 39000, 5000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 
 let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
