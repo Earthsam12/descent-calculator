@@ -1,11 +1,11 @@
 {
   "name": "descent-calculator",
   "version": "0.1.0",
-  "description": "Simple calculator that can provide FPA(s) for a descent path given constraints",
+  "description": "Simple calculator that can provide a descent path given constraints",
   "main": "index.js",
   "scripts": {
-    "build": "cd scripts && build.cmd",
-    "clean-build": "cd scripts && cleanBuild.cmd",
+    "build": "tsc && echo.> build/input/star.txt",
+    "clean-build": "powershell del .\\build\\* -r && tsc && echo.> build/input/star.txt",
     "run": "node build/index.js",
     "dev": "ts-node src/index.ts -- --debug"
   },
