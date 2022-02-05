@@ -19,6 +19,11 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
         finalAlt = (star.legs[star.legs.length - 1].endPoint.tops + star.legs[star.legs.length - 1].endPoint.bottoms) / 2;
     }
 
+    if (star.legs[star.legs.length-1].endPoint.tops === 100000 && star.legs[star.legs.length-1].endPoint.bottoms === 0) {
+        star.legs[star.legs.length-1].endPoint.tops = finalAlt;
+        star.legs[star.legs.length-1].endPoint.bottoms = finalAlt;
+    }
+    
     let rigidPoints = [];
     for (let i = 0; i < star.legs.slice().reverse().length; i++) {
         const leg = star.legs.slice().reverse()[i];
@@ -29,6 +34,9 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
             rigidPoints.push(leg.startPoint);
         }
     }
+
+    
+
     let result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
         if (DEBUG_MODE) { console.log('\nRunning Rigid Check') }
@@ -54,10 +62,10 @@ if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.sli
     DEBUG_MODE = true;
 }
 
-// TEMP BELOW: FOR TESTING
-// TODO: IF NO FINAL CONSTRAINT: set final alt as constriant
+// TEMP BELOW: for testing
+// TODO: if no final constraint: set final alt as constriant
 
-import { CLIPR2 as STAR } from "./testing/test_star_data";
+import { FRDMM5 as STAR } from "./testing/test_star_data";
 const des = calcDes(STAR, 39000, 5000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 

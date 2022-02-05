@@ -101,9 +101,11 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 }
                 if (DEBUG_MODE) { console.log(`Can skip to ${nextRigidPoint.name}:`.padEnd(48, ' ') + canSkip) };
                 if (canSkip) {
-                    for (let j = index; j < revLegs.length; j++) {
+                    for (let j = index, tempAlt = alt; j < revLegs.length; j++) {
                         const l = revLegs[j];
-                        des.get('LEGS').unshift([l.startPoint.name, Math.round(calcAlt), parseFloat(fpa.toFixed(3))]);
+                        let tempCalcAlt = vcalc.altChange(l.length, fpa) + tempAlt
+                        des.get('LEGS').unshift([l.startPoint.name, Math.round(tempCalcAlt), parseFloat(fpa.toFixed(3))]);
+                        tempAlt = tempCalcAlt
                         if (l.startPoint === nextRigidPoint) {
                             break;
                         }

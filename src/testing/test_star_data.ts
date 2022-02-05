@@ -188,14 +188,55 @@ export const CLIPR2 = new Star(
     [4, 20, 16, 6, 5, 8]
 );
 
-/* TEMPLATE
+// for xyz
+export const FRDMM5 = new Star(
+    'FRDMM5', // Star name
+    [ // Names
+        'BUCKO',
+        'DRRON',
+        'HONNR',
+        'BRVRY',
+        'COURG',
+        'PLDGE',
+        'WEWIL',
+        'NEVVR',
+        'FORGT',
+        'SEPII',
+        'ALWYZ',
+        'LETZZ',
+        'RLLLL',
+        'VCTRY',
+        'HEROO'
+    ],
+    [ // Constraints
+        [31000, 31000],
+        [31000, 27000],
+        [28000, 24000],
+        [26000, 22000],
+        [23000, 20000],
+        [17000, 15000],
+        [100000, 14000],
+        [100000, 12000],
+        [100000, 11000],
+        [100000, 10000],
+        [10000, 0],
+        [8000, 8000],
+        [6000, 6000],
+        [100000, 0],
+        [100000, 0]
+    ],
+    [12, 15, 13, 11, 17, 12, 6, 7, 5, 5, 10, 8, 10, 8] // Leg lengths
+)
+
+
+/* TE MPLATE
 // for xyz
 export const CLIPR2 = new Star(
     '', // Star name
     [ // Names
         
     ],
-    [ // Constraint
+    [ // Constraints [tops, bottoms]
 
     ],
     [] // Leg lengths
