@@ -50,12 +50,11 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     }
     let validAngles = [];
     let solved = false;
-    let wptDistFromEnd = 0;
     for (const angle of angles) {
         if (DEBUG_MODE) { console.log(`Testing angle:`.padEnd(48, ' ') + `${angle}`) };
 
         let isValidAngle = true;
-
+        let wptDistFromEnd = 0;
         for (let index = 0; index < revLegs.length; index++) {
             const leg = revLegs[index];
             const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
@@ -82,7 +81,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
                 }
             }
 
-            calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops);
+            calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, angle, pivotPointDistFromEnd, pivotPoint.tops); // FIXME
             if (DEBUG_MODE) { console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}\n`) };
             if (!(calcAlt >= constraints[0] && calcAlt <= constraints[1])) {
                 isValidAngle = false;
@@ -113,7 +112,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
 
     if (DEBUG_MODE) { console.log(`Closest angle to ideal angle:`.padEnd(48, ' ') + `${closestAngle}`) };
     let des = new Map().set('LEGS', []);
-    wptDistFromEnd = 0;
+    let wptDistFromEnd = 0;
     for (const leg of revLegs) {
         if (wptDistFromEnd === 0) {
             des.get('LEGS').unshift([revLegs[0].endPoint.name, Math.round(vcalc.pointSlopeAlt(0, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)), undefined]);

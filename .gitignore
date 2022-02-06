@@ -111,3 +111,6 @@ build/
 
 # Lines of code out file
 /out
+
+# input
+src/input/STAR.txt
