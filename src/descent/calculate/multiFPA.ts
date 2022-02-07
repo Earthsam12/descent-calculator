@@ -11,7 +11,6 @@ import { Vcalc } from "../vcalc";
  */
 export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoints: Point[], DEBUG_MODE: boolean) {
     const vcalc = new Vcalc();
-
     let angles: number[] = [];
     {
         let a = 0;
@@ -31,7 +30,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
     } else {
         firstTargetAltitude = (star.legs[0].startPoint.tops + star.legs[0].startPoint.bottoms) / 2;
     }
-    
+
     let idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
     let alt = finalAlt;
     let currentAngle = idealAngle;
@@ -43,9 +42,9 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
         const constraints = [leg.startPoint.bottoms, leg.startPoint.tops];
-
+        idealAngle = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
         if (DEBUG_MODE) {
-            console.log(`\nLeg:`.padEnd(49, ' ') + ` ${leg.name}\n`
+            console.log(`\nLeg:`.padEnd(48, ' ') + ` ${leg.name}\n`
                 + `Leg Starting Waypoint:`.padEnd(48, ' ') + `${leg.startPoint.name}\n`
                 + `Leg Terminal Waypoint:`.padEnd(48, ' ') + `${leg.endPoint.name}\n`
                 + `Leg Length:`.padEnd(48, ' ') + `${leg.length}\n`
@@ -62,7 +61,8 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
             des.get('LEGS').unshift([leg.endPoint.name, finalAlt, undefined])
         }
 
-        { // * check for rigidPoints ahead
+        // Check for rigid points ahead of next waypoint
+        {
             let nextRigidPoint: Point;
             for (const l of rigidPoints) {
                 if (star.points.slice().reverse().indexOf(l) > star.points.slice().reverse().indexOf(leg.endPoint)) {
@@ -70,8 +70,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                     break;
                 }
             }
-
-            if (DEBUG_MODE) { try {console.log('Next Rigid Point:'.padEnd(48, ' ') + `${nextRigidPoint.name}`)} catch (error) {console.log('Next Rigid Point:'.padEnd(48, ' ') + 'None')}};
+            if (DEBUG_MODE) { try { console.log('Next Rigid Point:'.padEnd(48, ' ') + `${nextRigidPoint.name}`) } catch (error) { console.log('Next Rigid Point:'.padEnd(48, ' ') + 'None') } };
             if (nextRigidPoint !== undefined) {
                 let distToNextRigidPoint = 0;
                 for (let i = index; i < revLegs.length; i++) {
@@ -81,12 +80,12 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                         break;
                     }
                 }
-
                 if (DEBUG_MODE) { console.log(`Distance to ${nextRigidPoint.name}:`.padEnd(48, ' ') + distToNextRigidPoint) }
                 const fpa = vcalc.desAngle(distToNextRigidPoint, nextRigidPoint.tops - alt);
                 let canSkip = true;
                 let i = index;
                 let calcAlt: number;
+
                 for (let tempAlt = alt; i < revLegs.length; i++) {
                     const l = revLegs[i];
                     calcAlt = vcalc.altChange(l.length, fpa) + tempAlt;
@@ -113,16 +112,14 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                     currentAngle = fpa;
                     index = i;
                     alt = calcAlt;
-                    if (DEBUG_MODE) {console.log(`Leg FPA:`.padEnd(48, ' ') + `${parseFloat(currentAngle.toFixed(3))}`)}
+                    if (DEBUG_MODE) { console.log(`Leg FPA:`.padEnd(48, ' ') + `${parseFloat(currentAngle.toFixed(3))}`) }
                     continue;
                 }
             }
         }
 
-        // * recalculate idealAngle
-        idealAngle = vcalc.desAngle(distToEnd, firstTargetAltitude - alt);
-
-        { // * check if can go to first point
+        // Check if we can skip to end
+        {
             let canSkipToEnd = true;
             for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                 const l = revLegs[i];
@@ -133,8 +130,9 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 }
                 tempAlt = calcAlt;
             }
+
             if (canSkipToEnd) {
-                if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'true')};
+                if (DEBUG_MODE) { console.log('Can skip to end:'.padEnd(48, ' ') + 'true') };
                 for (let i = index, tempAlt = alt; i < revLegs.length; i++) {
                     const l = revLegs[i];
                     const calcAlt = vcalc.altChange(l.length, idealAngle) + tempAlt;
@@ -144,7 +142,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
                 return des;
             } else {
-                if (DEBUG_MODE) {console.log('Can skip to end:'.padEnd(48, ' ') + 'false')};
+                if (DEBUG_MODE) { console.log('Can skip to end:'.padEnd(48, ' ') + 'false') };
             }
         }
 
@@ -190,7 +188,6 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 + `Leg FPA:`.padEnd(48, ' ') + `${parseFloat(currentAngle.toFixed(3))}\n`
                 + `${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`);
         }
-
         distToEnd -= leg.length;
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(currentAngle.toFixed(3))]);
         alt = Math.round(calcAlt);

@@ -14,7 +14,6 @@ export class Star {
         this.pointNames = pointNames;
         this.constraints = constraints;
         this.legLengths = legLengths;
-
         this.points = [];
         let k = 0;
         for (let Name of this.pointNames) {
@@ -32,6 +31,7 @@ export class Star {
                 break;
             }
         }
+
         for (const leg of this.legs) {
             this.length += leg.length;
         }

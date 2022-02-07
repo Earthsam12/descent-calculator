@@ -4,13 +4,13 @@ import { Star } from "../lib/Star";
 export const TRUPS4 = new Star(
     'TRUPS4',
     [
-        'RANJR', 
-        'JARHD', 
-        'PJAAE', 
-        'USAAY', 
-        'WEEDU', 
-        'SUPRT', 
-        'OOURR', 
+        'RANJR',
+        'JARHD',
+        'PJAAE',
+        'USAAY',
+        'WEEDU',
+        'SUPRT',
+        'OOURR',
         'TRUPS'
     ],
     [
@@ -58,16 +58,16 @@ export const NITZR3 = new Star(
 export const BAYST1 = new Star(
     'BAYST1',
     [
-        'SERCO', 
-        'HUULL', 
-        'GNZZO', 
-        'RYDRR', 
-        'KEVVI', 
-        'BAYST', 
-        'JUSSE', 
-        'CLIFY', 
-        'DWYER', 
-        'AYYYY', 
+        'SERCO',
+        'HUULL',
+        'GNZZO',
+        'RYDRR',
+        'KEVVI',
+        'BAYST',
+        'JUSSE',
+        'CLIFY',
+        'DWYER',
+        'AYYYY',
         'PETYR'
     ],
     [
@@ -90,11 +90,11 @@ export const BAYST1 = new Star(
 export const BAYST1_shortened_modified = new Star(
     'BAYST1',
     [
-        'SERCO', 
-        'HUULL', 
-        'GNZZO', 
-        'RYDRR', 
-        'KEVVI', 
+        'SERCO',
+        'HUULL',
+        'GNZZO',
+        'RYDRR',
+        'KEVVI',
         'BAYST'
     ],
     [
@@ -198,7 +198,7 @@ export const ALWYS2 = new Star(
     [17, 10, 13, 14, 10, 13, 11] // Leg lengths
 )
 
-/* .TEMPLATE
+/*-template-
 // for xyz
 export const CLIPR2 = new Star(
     '', // Star name
