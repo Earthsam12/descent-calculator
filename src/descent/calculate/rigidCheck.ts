@@ -14,7 +14,6 @@ import { Vcalc } from "../vcalc";
 export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1: Point, point2: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
     const revLegs = star.legs.slice().reverse();
-
     let firstTargetAltitude: number;
     if (star.legs[0].startPoint.tops === 100000) {
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
@@ -27,7 +26,6 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
     }
 
     const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
-
     let point1DistFromEnd = 0;
     for (const leg of revLegs) {
         if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point1) {
@@ -51,11 +49,9 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
     }
 
     const requiredAngle = vcalc.desAngle(Math.abs(point2DistFromEnd - point1DistFromEnd), Math.abs(point2.tops - point1.tops));
-
     let calcAlt: number;
     let wptDistFromEnd = 0;
     let des = new Map().set('LEGS', []);
-
     if (DEBUG_MODE) { console.log(`Required Angle:                                 ${parseFloat(requiredAngle.toFixed(3))}`) }
     for (let index = 0; index < revLegs.length; index++) {
         const leg = revLegs[index];
@@ -80,6 +76,7 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
             }
             des.get('LEGS').unshift([leg.endPoint.name, Math.round(calcAlt), undefined]);
         }
+
         wptDistFromEnd += leg.length;
         calcAlt = vcalc.pointSlopeAlt(wptDistFromEnd, requiredAngle, point1DistFromEnd, point1.tops);
         if (DEBUG_MODE) { console.log(`${leg.startPoint.name} Calculated Altitude:`.padEnd(48, ' ') + `${Math.round(calcAlt)}`) };
@@ -89,6 +86,5 @@ export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1:
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(calcAlt), parseFloat(requiredAngle.toFixed(3))]);
         des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     }
-
     return des;
 }

@@ -12,12 +12,13 @@ import { Vcalc } from "../vcalc";
  */
 export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
-
     let angles: number[] = [];
-    let a = 0;
-    while (a < 7) {
-        a = parseFloat((a + 0.1).toFixed(1));
-        angles.push(a);
+    {
+        let a = 0;
+        while (a < 7) {
+            a = parseFloat((a + 0.1).toFixed(1));
+            angles.push(a);
+        }
     }
 
     let firstTargetAltitude: number;
@@ -34,8 +35,8 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
     const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
     const revLegs = star.legs.slice().reverse();
     let calcAlt: number;
-
     let pivotPointDistFromEnd = 0;
+
     for (let i = 0; i < revLegs.length; i++) {
         const leg = revLegs[i];
         if (i === 0) {
@@ -48,11 +49,11 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
             break;
         }
     }
+
     let validAngles = [];
     let solved = false;
     for (const angle of angles) {
         if (DEBUG_MODE) { console.log(`Testing angle:`.padEnd(48, ' ') + `${angle}`) };
-
         let isValidAngle = true;
         let wptDistFromEnd = 0;
         for (let index = 0; index < revLegs.length; index++) {
@@ -120,6 +121,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
         wptDistFromEnd += leg.length;
         des.get('LEGS').unshift([leg.startPoint.name, Math.round(vcalc.pointSlopeAlt(wptDistFromEnd, closestAngle, pivotPointDistFromEnd, pivotPoint.tops)), closestAngle])
     }
+
     des.set('TOD', [parseFloat(vcalc.desDistance(cruise - des.get('LEGS')[0][1], des.get('LEGS')[0][2]).toFixed(1)), des.get('LEGS')[0][2]]);
     return des;
 }

@@ -35,8 +35,6 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
         }
     }
 
-    
-
     let result: Map<any, any> | undefined;
     if (rigidPoints.length === 2) {
         if (DEBUG_MODE) { console.log('\nRunning Rigid Check') }
@@ -68,7 +66,7 @@ if (process.argv.slice(2).toString().indexOf('txt-in') !== -1) {
 }
 
 import { BAYST1 as importStar } from "./testing/test_star_data";
-import { inputStar } from "./input/input";
+import { inputStar } from "../input/input";
 
 let STAR: Star;
 if (TXT_IN) {
@@ -77,10 +75,8 @@ if (TXT_IN) {
     STAR = importStar;
 }
 
-
 const des = calcDes(STAR, 39000, 6000, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
-
 let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of des.get('LEGS')) {
     if (!i[2]) {
