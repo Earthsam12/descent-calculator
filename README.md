@@ -11,7 +11,7 @@ There are 3 different methods for calculation:
 
 * Pivot
 * Rigid Check
-* Multi FPA (please suggest a better name)
+* Multi FPA
 
 ### Pivot:
 Pivot Executes when there is exactly 1 waypoint in the star that has an 'at' constraint (the top constraint is the same as the bottom constraint).
@@ -57,76 +57,6 @@ It starts at the end of the STAR and works backwards. For each leg, it checks wh
  ### Flow Chart of Calculation Methods:
  ![image](https://user-images.githubusercontent.com/93292288/150719731-27551302-3ca7-4511-96a5-01d7d3597d36.png)
 
- 
- ## Returned data:
- All functions return a Map with exactly 2 entries:
- * `'LEGS'`
-   * Array of Arrays for each leg in the STAR, defined by it's startpoint.
-     * `[<point name>, <calculated alt at point>, <Leg FPA to be flown after passing that point>]`
- * `'TOD'`
-   * Array of 2 items containing the Top Of Descent Point's distance to the first point.
-     * `[<TOD distance to first point>, <FPA from TOD to first point>]`
- 
- The map will look something like this: 
- ```ts
- Map(2) {
-  'LEGS' => [
-    [ 'SERCO', 19687, 1.3 ],
-    [ 'HUULL', 17894, 1.3 ],
-    [ 'GNZZO', 13068, 1.3 ],
-    [ 'RYDRR', 11000, 0.542 ],
-    [ 'KEVVI', 10023, 1.7 ],
-    [ 'BAYST', 9121, 1 ],
-    [ 'JUSSE', 8485, 1 ],
-    [ 'CLIFY', 7955, 1 ],
-    [ 'DWYER', 7000, 1.571 ],
-    [ 'AYYYY', 6000, 1.571 ],
-    [ 'PETYR', 5000, undefined ]
-  ],
-  'TOD' => [ 140.1, 1.3 ]
-}
-```
-The last Array in the `'LEGS'` entry has `undefined` for it's FPA value. This is because no FPA is calculated for that leg as it is the last leg in the STAR. 
-
-### Parsing the data
-If for some reason you want to parse the data:
-```ts
-const des = calcDes(STAR, 39000, 9000);
-const legs = des.get('LEGS'); // Array of legs as defined before
-const TOD = des.get('TOD')[0]; // Top Of Descent distance from first waypoint
-
-// Getting first leg:
-legs[0];
-
-// Getting last leg:
-legs[legs.length-1];
-// OR:
-legs.slice().reverse()[0];
-
-// Getting a specific leg by it's start point:
-const legIWant = 'BAYST';
-for (const i of legs) {
-  if (i[0] === legIWant) {
-    legIWant = i;
-    break;
-  }
-}
-
-for (const leg of legs) {
-  // Getting leg start point's name:
-  leg[0];
-
-  // Getting calculated altitude at the leg start point:
-  leg[1];
-
-  // Getting Leg FPA:
-  leg[2];
-}
-
-```
-
 ## Future Work:
  * GUI Functionality
- * MultiFPA 'foresight' (ability to evaluate constraints at points beyond the next one)
  * Nav Database with ability to select and insert STAR data.
- 
