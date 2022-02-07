@@ -6,8 +6,8 @@
   "scripts": {
     "build": "tsc && echo.> build/input/star.txt",
     "clean-build": "powershell del .\\build\\* -r && tsc && echo.> build/input/star.txt",
-    "run": "node build/index.js",
-    "dev": "ts-node src/index.ts -- --debug"
+    "run": "node build/descent/index.js",
+    "dev": "ts-node src/descent/index.ts -- --debug"
   },
   "repository": {
     "type": "git",
