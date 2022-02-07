@@ -2,7 +2,7 @@
   "name": "descent-calculator",
   "version": "0.1.0",
   "description": "Simple calculator that can provide a descent path given constraints",
-  "main": "index.js",
+  "main": "build/descent/index.js",
   "scripts": {
     "build": "tsc && echo.> build/input/input.txt",
     "clean-build": "powershell del .\\build\\* -r && tsc && echo.> build/input/input.txt",
