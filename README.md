@@ -46,13 +46,13 @@ Where,
 
 The algorithm does not want to change the angle often, and when it must, it wants to change it as little as possible. To do this, there is a 'current angle' which is used and prefered for each loop. The current angle is initialized as the 'ideal angle'.
 
-It starts at the end of the STAR and works backwards. For each leg, it checks what the next constraint is:
-
- - If the next constraint is an 'at' constraint, it calculates the 'required angle' and sets that as the 'current angle'.
+It starts at the end of the STAR and works backwards. For each leg, it will check a few things:
+ - If it's possible to skip directly to the end using the ideal angle.
+ - If there are points wtih 'at' constraitns ahead of the next point (including the next point): it calculates and checks the 'required angle' to that point.
  - If the next constraint is a 'window' constraint, AND the current angle meets those constraints, then it keeps the current angle and calculates the altitude given that angle
  - If the next constraint is a 'window' constraint BUT the current angle didn't meet those constraints, then it runs 'angle iteration' (essentially what Pivot does) and finds what angles meet those constraints, and picks which one is closest to the old angle.
  
- Multi FPA will always return a path, but it may have several different flight path angles for some segments.
+ Multi FPA will always return a path, but it may have several FPA changes.
  
  ### Flow Chart of Calculation Methods:
  ![image](https://user-images.githubusercontent.com/93292288/150719731-27551302-3ca7-4511-96a5-01d7d3597d36.png)
