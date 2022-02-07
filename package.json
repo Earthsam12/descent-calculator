@@ -4,8 +4,8 @@
   "description": "Simple calculator that can provide a descent path given constraints",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && echo.> build/input/star.txt",
-    "clean-build": "powershell del .\\build\\* -r && tsc && echo.> build/input/star.txt",
+    "build": "tsc && echo.> build/input/input.txt",
+    "clean-build": "powershell del .\\build\\* -r && tsc && echo.> build/input/input.txt",
     "run": "node build/descent/index.js",
     "dev": "ts-node src/descent/index.ts -- --debug"
   },

@@ -1,4 +1,4 @@
-import { Star } from "../lib/Star";
+import { Star } from "../descent/lib/Star";
 import fs from 'fs';
 import path from "path";
 
@@ -33,4 +33,4 @@ export const createStarFromText = (text: string) => {
     return new Star('ALWYS2', points, constraints, legLengths);
 }
 
-export const inputStar = createStarFromText(fs.readFileSync(path.resolve(__dirname, "./star.txt")).toString());
+export const inputStar = createStarFromText(fs.readFileSync(path.resolve(__dirname, "./input.txt")).toString());

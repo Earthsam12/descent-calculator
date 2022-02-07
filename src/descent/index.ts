@@ -68,7 +68,7 @@ if (process.argv.slice(2).toString().indexOf('txt-in') !== -1) {
 }
 
 import { BAYST1 as importStar } from "./testing/test_star_data";
-import { inputStar } from "./input/input";
+import { inputStar } from "../input/input";
 
 let STAR: Star;
 if (TXT_IN) {
