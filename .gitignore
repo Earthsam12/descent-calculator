@@ -113,4 +113,4 @@ build/
 /out
 
 # input
-src/input/STAR.txt
+src/input/input.txt
