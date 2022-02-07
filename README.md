@@ -53,9 +53,6 @@ It starts at the end of the STAR and works backwards. For each leg, it will chec
  - If the next constraint is a 'window' constraint BUT the current angle didn't meet those constraints, then it runs 'angle iteration' (essentially what Pivot does) and finds what angles meet those constraints, and picks which one is closest to the old angle.
  
  Multi FPA will always return a path, but it may have several FPA changes.
- 
- ### Flow Chart of Calculation Methods:
- ![image](https://user-images.githubusercontent.com/93292288/150719731-27551302-3ca7-4511-96a5-01d7d3597d36.png)
 
 ## Future Work:
  * GUI Functionality
