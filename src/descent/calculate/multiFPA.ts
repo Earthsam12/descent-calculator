@@ -25,7 +25,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
     } else if (star.legs[0].startPoint.bottoms === 0) {
         firstTargetAltitude = star.legs[0].startPoint.tops - 1000;
-    } else if (star.legs[0].startPoint.tops == 100000 && star.legs[0].startPoint.bottoms == 0) {
+    } else if (star.legs[0].startPoint.tops === 100000 && star.legs[0].startPoint.bottoms === 0) {
         firstTargetAltitude = cruise;  // Hopefully this will never be the case...
     } else {
         firstTargetAltitude = (star.legs[0].startPoint.tops + star.legs[0].startPoint.bottoms) / 2;
@@ -63,7 +63,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
 
         // Check for rigid points ahead of next waypoint
         {
-            let nextRigidPoint: Point;
+            let nextRigidPoint!: Point;
             for (const l of rigidPoints) {
                 if (star.points.slice().reverse().indexOf(l) > star.points.slice().reverse().indexOf(leg.endPoint)) {
                     nextRigidPoint = l;
@@ -84,7 +84,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 const fpa = vcalc.desAngle(distToNextRigidPoint, nextRigidPoint.tops - alt);
                 let canSkip = true;
                 let i = index;
-                let calcAlt: number;
+                let calcAlt!: number;
 
                 for (let tempAlt = alt; i < revLegs.length; i++) {
                     const l = revLegs[i];
@@ -168,7 +168,7 @@ export function multiFPA(star: Star, cruise: number, finalAlt: number, rigidPoin
                 }
             }
 
-            let closestAngle = undefined;
+            let closestAngle!: number;
 
             for (const i of validAngles) {
                 if (!closestAngle) {

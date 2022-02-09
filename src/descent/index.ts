@@ -1,8 +1,8 @@
 import { Star } from "./lib/Star";
-import { Vcalc } from "./vcalc";
 import { multiFPA } from "./calculate/multiFPA";
 import { Pivot } from "./calculate/pivot";
 import { RigidCheck } from "./calculate/rigidCheck";
+import { BAYST1 as STAR } from "./testing/test_star_data";
 
 /**
  * @param star Star object
@@ -12,8 +12,6 @@ import { RigidCheck } from "./calculate/rigidCheck";
  * @returns Map of leg FPAs and predicted altitudes + top of descent and final alt
  */
 export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE = false) {
-    const vcalc = new Vcalc();
-
     if (finalAlt > star.legs[star.legs.length - 1].endPoint.tops || finalAlt < star.legs[star.legs.length - 1].endPoint.bottoms) {
         if (DEBUG_MODE) { console.log('\nOverwriting finalAlt because of constraints') };
         finalAlt = (star.legs[star.legs.length - 1].endPoint.tops + star.legs[star.legs.length - 1].endPoint.bottoms) / 2;
@@ -58,21 +56,6 @@ export function calcDes(star: Star, cruise: number, finalAlt: number, DEBUG_MODE
 let DEBUG_MODE = false;
 if (process.argv.slice(2).toString().indexOf('debug') !== -1 && process.argv.slice(2).toString().indexOf('no-debug') === -1) {
     DEBUG_MODE = true;
-}
-
-let TXT_IN = false; // TEMP: txtin is temp until GUI is finished
-if (process.argv.slice(2).toString().indexOf('txt-in') !== -1) {
-    TXT_IN = true;
-}
-
-import { BAYST1 as importStar } from "./testing/test_star_data";
-import { inputStar } from "../input/input";
-
-let STAR: Star;
-if (TXT_IN) {
-    STAR = inputStar;
-} else {
-    STAR = importStar;
 }
 
 const des = calcDes(STAR, 39000, 6000, DEBUG_MODE);

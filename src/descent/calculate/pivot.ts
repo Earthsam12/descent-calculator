@@ -26,7 +26,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
         firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
     } else if (star.legs[0].startPoint.bottoms === 0) {
         firstTargetAltitude = star.legs[0].startPoint.tops - 1000;
-    } else if (star.legs[0].startPoint.tops == 100000 && star.legs[0].startPoint.bottoms == 0) {
+    } else if (star.legs[0].startPoint.tops === 100000 && star.legs[0].startPoint.bottoms === 0) {
         firstTargetAltitude = cruise;  // Hopefully this will never be the case...
     } else {
         firstTargetAltitude = (star.legs[0].startPoint.tops + star.legs[0].startPoint.bottoms) / 2;
@@ -102,7 +102,7 @@ export function Pivot(star: Star, cruise: number, finalAlt: number, pivotPoint: 
         return undefined;
     }
 
-    let closestAngle = undefined;
+    let closestAngle!: number;
     for (const i of validAngles) {
         if (!closestAngle) {
             closestAngle = i;

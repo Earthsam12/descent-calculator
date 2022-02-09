@@ -14,18 +14,7 @@ import { Vcalc } from "../vcalc";
 export function RigidCheck(star: Star, cruise: number, finalAlt: number, point1: Point, point2: Point, DEBUG_MODE = false) {
     const vcalc = new Vcalc();
     const revLegs = star.legs.slice().reverse();
-    let firstTargetAltitude: number;
-    if (star.legs[0].startPoint.tops === 100000) {
-        firstTargetAltitude = star.legs[0].startPoint.bottoms + 1000;
-    } else if (star.legs[0].startPoint.bottoms === 0) {
-        firstTargetAltitude = star.legs[0].startPoint.tops - 1000;
-    } else if (star.legs[0].startPoint.tops == 100000 && star.legs[0].startPoint.bottoms == 0) {
-        firstTargetAltitude = cruise;  // Hopefully this will never be the case...
-    } else {
-        firstTargetAltitude = (star.legs[0].startPoint.tops + star.legs[0].startPoint.bottoms) / 2;
-    }
 
-    const idealAngle = parseFloat(vcalc.desAngle(star.length, firstTargetAltitude - finalAlt).toFixed(1));
     let point1DistFromEnd = 0;
     for (const leg of revLegs) {
         if (leg.endPoint === revLegs[0].endPoint && leg.endPoint === point1) {
