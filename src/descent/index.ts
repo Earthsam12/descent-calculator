@@ -75,7 +75,7 @@ if (TXT_IN) {
     STAR = importStar;
 }
 
-const des = calcDes(STAR, 39000, 6000, DEBUG_MODE);
+const des = calcDes(STAR, 39000, 1500, DEBUG_MODE);
 if (DEBUG_MODE) { console.log(des) };
 let desTree: string = ` ╔════════════════TOD: ${des.get('TOD')[0]} NMI from ${des.get('LEGS')[0][0]}\n ║ \n${des.get('TOD')[1].toFixed(1)}°\n ║ \n`;
 for (const i of des.get('LEGS')) {
